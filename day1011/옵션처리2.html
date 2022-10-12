@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>옵션처리</title>
+</head>
+<style>
+    /* css는 누구를 대상으로 적용할지 결정하기 위한 선택자를 명시해야 한다 */
+    select {
+        background-color: blue;
+        color: yellow;
+        font-weight: bold;
+    }
+    span{
+        font-size: 40px;
+    }
+</style>
+<script>
+    function getResult(fruit){
+        //문서 내의 select 상자의 현재 선택값을 가져오기
+        let span = document.querySelector("span");
+
+        //  얻어진 결과를 span에 출력하자
+        span.innerText = fruit;
+    }
+</script>
+<body>
+    <input type="button" value="나버튼" id="bt" onclick="this.value='왕버튼'">
+    <select name="" id="sel" onChange="getResult(this.value)">
+        <option value="사과">사과</option>
+        <option value="멜론">멜론</option>
+        <option value="샤인머스켓">샤인머스켓</option>
+        <option value="레몬">레몬</option>
+    </select>
+    <p>
+    <span>과일을 선택하세요</span>
+    </p>
+    <!-- span 은 inline 속성이므로 다른 태그요소와 공존할 수 있다.. 단 너비, 높이 지정
+    불가 -->
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>움직이기</title>
+</head>
+<style>
+    #pic{
+        width: 100px;
+        /* 부모인 body를 기준으로 한 위치 */
+        /* position: absolute; 
+        left: 0px;
+        top: 200px; */
+    }
+</style>
+<script>
+    let targetX = 600; //도달할 목표지점 위치
+    let a = 0.1;
+    function moveOne(){
+        //현실을 반영하지 않고 특정 위치를 다가갈 떄 얼마나 어색한지
+        // 경험해보자
+        let pic = document.querySelector("#pic");
+        pic.style.left = targetX+"px";
+    }
+    function moveTwo(){
+        //나위 위는 = 현재위치 + (목표-나의현재) * 0.3;
+        let pic = document.querySelector("#pic");
+        pic.style.left = (parseInt(pic.style.left) + a * (targetX - parseInt(pic.style.left))) + "px";
+        
+    }
+    function init(){
+        //스타일시트의 포지션을 js에서 확실히 제어하려면 아예
+        //포지션 자체를 css에서 하지 말고 js에서 적용하는게
+        //확실하다
+        let pic = document.querySelector("#pic");
+        pic.style.position= "absolute";
+        pic.style.left = "0px";
+        pic.style.top = "200px";
+    }
+</script>
+<body onload=init() onkeydown=moveTwo()>
+    <button onclick=moveOne()>순간이동</button>
+    <button onclick=moveTwo()>감속도이동</button>
+    <img id="pic" src="../images/mon.jpg" alt="">
+</body>
+</html>

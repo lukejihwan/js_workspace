@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지팔레트</title>
+</head>
+<style>
+    #wrapper{
+        width: 600px;
+        height: 500px;
+        margin: auto;
+        background-color: yellow;
+    }
+    #thumb{
+        width: 100px;
+        height: 100%;
+        background-color: pink;
+        float: left;
+        overflow: scroll;
+        /* 넘쳐나는 컨텐츠에 대한 처리결정
+        overflow:hidden; 넘쳐나는 영역을 가려버림
+        overflow: scroll; 넘쳐나는 영역에 스크롤처리*/
+    }
+    #content{
+        width: 500px;
+        height: 100%;
+        background-color: skyblue;
+        float: left;
+    }
+    #thumb img{
+        width: 90px;
+        height: 80px;
+        border: 2px solid red;
+    }
+</style>
+<script>
+    function setImg(n){
+        //문서내의 big이라는 아미지의 경로를 선택한 이미지로 변경한다.
+        let big = document.querySelector("#big");
+        big.src = `../images/${n}.jpg`;
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="thumb">
+            <img src="../images/1.jpg" onClick=setImg(1)>
+            <img src="../images/2.jpg" onClick=setImg(2)>
+            <img src="../images/3.jpg" onClick=setImg(3)>
+            <img src="../images/4.jpg" onClick=setImg(4)>
+            <img src="../images/5.jpg" onClick=setImg(5)>
+            <img src="../images/6.jpg" onClick=setImg(6)>
+            <img src="../images/7.jpg" onClick=setImg(7)>
+            <img src="../images/8.jpg" onClick=setImg(8)>
+            <img src="../images/9.jpg" onClick=setImg(9)>
+            <img src="../images/10.jpg" onClick=setImg(10)>
+        </div>
+        <div id="content">
+            <img style="width: 100%;height:100%" id="big">
+        </div>'
+    </div>
+</body>
+</html>

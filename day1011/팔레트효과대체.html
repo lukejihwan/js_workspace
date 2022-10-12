@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>팔레트효과</title>
+</head>
+<style>
+    #wrapper{
+        width: 800px;
+        height: 600px;
+        background-color: yellow;
+        margin: auto;
+    }
+    #thumb{
+        width: 100%;
+        height: 100px;
+        background-color: skyblue;
+        overflow: hidden;
+    }
+    #content{
+        width: 100%;
+        height: 500px;
+        background-color: tomato;
+    }
+    #thumb div{
+        width: 100px;
+        height: 80px;
+        border: 2px solid white;
+        float: left;
+        /* div는 block 형이므로 같은 수평선상에 다른 태그 요소를 허용하지 않는다
+        그러므로 float을 사용 */
+    }
+</style>
+<script>
+    function setBg(){
+        // 문서 내의 content 영역의 배경색을 red로 변경
+        let con = document.querySelector("#content");
+        con.style.backgroundColor = event.target.style.backgroundColor;
+    }
+</script>
+<body>
+    <!-- 가로800 세로 600  thumb 내용물 100, 80-->
+    <div id="wrapper">
+            <div id="thumb">
+                <div ondblclick="setBg()" id="box1" style="background-color: red;"></div>
+                <div onmouseover="setBg()" id="box2" style="background-color: orange;"></div>
+                <div onmouseover="setBg()" id="box3" style="background-color: yellow;"></div>
+                <div onmouseover="setBg()" id="box4" style="background-color: green;"></div>
+                <div onmouseover="setBg()" id="box5" style="background-color: blue;"></div>
+                <div onmouseover="setBg()" id="box6" style="background-color: navy;"></div>
+                <div onmouseover="setBg()" id="box7" style="background-color: purple;"></div>
+            </div>
+            <div id="content"></div>
+    </div>
+</body>
+</html>

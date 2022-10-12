@@ -1,0 +1,81 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			background-image: url("../images/bg_game.png");
+			background-size: auto 100vh;
+		}
+		img{
+		width: 70px;
+		transform: rotate(90deg);
+		position: absolute;
+		left: 200px;
+		top: 300px;
+		}
+	</style>
+	<script>
+
+		let x = 200;
+		let y = 300;
+		let bg = 0;
+		function moveRight(){
+		console.log("우클릭");
+		// 문서 내의 img 태그에 적용된 tyle의 left 값을 씩 증가시키자
+			x += 100;
+			let img = document.querySelector("img");
+			img.style.left = x + "px";
+		}
+		function moveLeft(){
+			x -= 100;
+			let img = document.querySelector("img");
+			img.style.left = x + "px";
+		}
+		function moveUp(){
+			y	-= 100;
+			let img = document.querySelector("img");
+			img.style.top = y + "px";
+		}
+
+		function moveDown(){
+			y	+= 100;
+			let img = document.querySelector("img");
+			img.style.top = y + "px";
+		}
+		function moveBg(){
+			bg -= 5;
+			document.body.style.backgroundPosition = bg +"px 0px";
+			//document.body.style.backgroundPosition = "0px " + bg+ "px";
+			setTimeout(moveBg, 16); //내가 원하는 함수를 호출할 수 있다.
+		}
+		//moveBg()를 호출했지만 body가 호출되지 않아서 에러가 남
+		// moveBg()
+	</script>
+	
+	</head>
+	<body>
+		<button onclick=moveBg()>배경 앞으로</button>
+		<table border="1px">
+			<tr>
+				<td></td>
+				<td onclick=moveUp()>▲</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td onclick=moveLeft()>◀</td>
+				<td onclick=moveDown()>▼</td>
+				<td onclick=moveRight()>▶</td>
+			</tr>
+		</table>
+		<img src="../images/icon_spaceShip.png"></img>
+
+	</body>
+</html>
+<script>
+	//body가 호출된 다음 정의하자
+	moveBg();
+</script>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부드러운메뉴막대</title>
+</head>
+<script>
+    let box;
+    let a = 0.1;
+    let targetY = 400;
+    let intervalID; // setInterval의 id를 저장하기 위한 변수
+    function init(){
+        //css 적용을 style태그에서 적용하지 않고 순수 프로그램에서 시도해보자
+        box = document.querySelector("#box");
+        box.style.width = 150+"px";
+        box.style.height = 45 + "px";
+        box.style.backgroundColor = "#eee";
+
+        //위치설정
+        box.style.position = "absolute";
+        box.style.left = 500 + "px";
+
+        
+    }
+    function startLoop(){
+        //이 함수를 호출하면 setInterval을 호출
+        intervalID = setInterval(setSize, 16.66);
+        box.style.backgroundColor="tomato";
+    }
+    function stopLoop(){
+        clearInterval(intervalID);
+        box.style.backgroundColor="#eeeeee";
+    }
+    function setSize(){
+        //빨간막대의 스타일중 높이값을 증가시키자(마우스 올릴 때)
+        //빨간막대의 스타일 중 높이값을 감소 시키자(마우스 내릴 때)
+        //빨간막대의 높이 = 기존막대높이 + a * (목표높이-기존막대높이)
+        box.style.height = parseFloat(box.style.height) + a * (targetY - parseFloat(box.style.height)) + "px";
+        box.innerText = box.style.height;
+        //빨간 막대의 스타일 중 높이값을 감소시키자(마우스 내릴 때)
+    }
+    function roll(n){
+        //마우스를 올려 놓으면 사각 막대의 목표지점을 400으로 주자
+         targetY = n;
+    }
+
+</script>
+<body onload=init()>
+    <button onclick=setSize()>수동</button>
+    <div id="box" onmouseover=roll(400) onmouseout=roll(45)></div>
+    <button onclick=startLoop()>엔진가동</button>
+    <button onclick=stopLoop()>엔진멈춤</button>
+</body>
+</html>

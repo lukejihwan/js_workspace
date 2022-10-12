@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        width: 600px;
+        height: 600px;
+        background-color: yellow;
+        margin: auto;
+    }
+    #wrapper div{
+        width: 100%;
+    }
+    #info{
+        height: 50px;
+        background-color: pink;
+        text-align: center;
+        font-size: 30px;
+    }
+    #content{
+        height: 500px;
+        background-color: skyblue;
+    }
+    #control{
+        height: 50px;
+        background-color: greenyellow;
+        text-align: center;
+        position: relative;
+    }
+    #content img{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    let getImg;
+    let getInfo;
+    let photo = new Array(10);
+    let count = 0;// 몇번째 배열 사진을 볼지를 결정짓는 전역변수
+    let st; //현재 진행중인 자동호출함수를 가리키는 전역변수
+    function next(a){
+        getImg.src = "../images/sea/" + photo[a];
+    }
+
+
+    function setInfo(a){
+        getInfo.innerHTML = "<marquee>"+photo[a]+"</marquee>";
+    }
+    function nextPhoto(){
+        //지금보고있는사진의 다음사진보기
+        if(count!==photo.length-1)
+        count++;
+
+        // if(count>=photo.length) {
+        //     count=0;
+        // }
+        next(count);
+        setInfo(count);
+    }
+    
+    function beforePhoto(){
+        if(count!==0)
+        count--
+        // if(count<0) {
+        //     count=photo.length-1;
+        // }
+        next(count);
+        setInfo(count);
+    }
+    function startAuto(){
+        /* 자동이란 우리가 이미 구현해놓은 수동구현을 컴퓨터가
+        자동으로 호출해주는 것이다. */
+        st = setInterval(nextPhoto, 2000);
+    }
+    function init(){
+        /*  
+        프로그램이 가동되면 이 갤러리 프로그램에서 사용할 이미지명
+        들을 순서있게 메모리에 띄우자 그 이유는 순서없는 이미지라서
+        갤러리 구현이 불가능해서*/
+        photo[0] = "abc.jfif";
+        photo[1] = "amgy.jfif";
+        photo[2] = "api.jfif";
+        photo[3] = "bbnj.jfif";
+        photo[4] = "ccv.jfif";
+        photo[5] = "eert.jfif";
+        photo[6] = "kko.jfif";
+        photo[7] = "mop.jfif";
+        photo[8] = "ney.jfif";
+        photo[9] = "rrt.jfif";
+        
+        //최초에 보여질 사진 처리
+        getImg = document.querySelector("#big");
+        getInfo = document.querySelector("#info");
+        next(count);
+        setInfo(count);
+
+    }
+</script>
+<body onload=init()>
+    <div id="wrapper">
+        <div id="info">abcd</div>
+        <div id="content">
+            <img id="big" src="" alt="">
+        </div>
+        <div id="control">
+            <button onclick=beforePhoto()>왼쪽</button>
+            <button onclick=clearInterval(st)>puase</button>
+            <button onclick=startAuto()>auto</button>
+            <button onclick=nextPhoto()>오른쪽</button>
+        </div>
+    </div>
+</body>
+</html>

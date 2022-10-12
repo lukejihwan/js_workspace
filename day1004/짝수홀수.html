@@ -1,0 +1,27 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		let flag = true;
+		while(flag){
+			let n = prompt("원하는 수를 입력하세요\n 프로그램을 종료하려면 0을 입력하세요");
+
+			//삼항 연산자로 n의 값을 판단해 보기
+			let result = (n%2 == 0)? "짝수":"홀수";
+			 console.log(n==0);
+			flag = (n==0)?false:true;
+
+
+
+			alert(result + "입니다");
+		}
+	</script>
+	</head>
+	<body>
+		
+	</body>
+</html>

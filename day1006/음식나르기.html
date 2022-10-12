@@ -1,0 +1,83 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	</head>
+	<script>
+		//wrapper: 너비 1000 높이 600 가운데
+		
+	</script>
+	<style>
+		/* span{
+			background:pink;
+		} */
+		#wrapper{
+			width: 1000px;
+			height: 600px;
+			margin: auto;
+			background-color: yellow;
+		}
+		#foods{
+			background: grey;
+			float: left;
+			width: 50%;
+			height:100%;
+
+		}
+		#dish{
+			background: url("../images/dish.png");
+			background-size: 100% 100%;
+			float:right;
+			width: 50%;
+			height:100%;
+
+		}
+		img{
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+
+	<script>
+		//마우스를 움직이는 동안 해당 마웃의 좌표를 얻어와보자
+		let flag = false;
+		function getPos(){
+			//console.log("x좌표는", event.clientX, " y좌표는", event.clientY);
+			//음식중 맘에 드는 거 하나를 대상으로 그 이미지의 x, y 좌표와 마우스 좌표를 일치시켜보자.
+			let f = document.querySelector("#foods img:nth-child(1)");
+			
+			if(flag){
+				f.style.left = (event.clientX - 50) +"px";
+				f.style.top = (event.clientY - 50)+ "px";
+				f.style.border="2px solid red";
+			}else{
+				f.style.border = "0px";
+			}
+		}
+
+		function drag(){
+			flag = !flag;
+		}
+	</script>
+	<body onMouseMove=getPos() onclick=drag()>
+	<!--	모든 태그는 block or inline 형식이다
+			block: 자신의 수평선상에 어떤 태그도 허용하지 않음. width, height 변경 가능
+			inline: 다른 태그와 공존할 수는 있지만, width, height를 조정할 수 없다.
+			따라서 이 태그는 태그안의 컨텐츠만큼의 크기만 확보함
+
+			<span>abc</span> inline태그
+			-->
+	
+		<div id="wrapper">
+			<div id="foods">
+				<img src="../images/pizza.png" style="position:absolute;left:220px;"></img>
+				<img src="../images/cola.png"></img>
+				<img src="../images/hamberger.png" ></img>
+			</div>
+			<div id="dish">접시</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>배경색입력받기</title>
+	<script>
+		function setBg(){
+			var bg = prompt("원하는 색상을 입력하세요 \n1. 빨 2. 주 3. 노 4. 초 5. 파 6. 남 7. 보");
+
+			if(bg == "빨"){
+				bg = "red";
+			}else if(bg == "주"){
+				bg = "orange";
+			}else if(bg == "노"){
+				bg = "yellow";
+			}else if(bg == "초"){
+				bg = "green";
+			}else if(bg == "파"){
+				bg = "blue";
+			}else if(bg == "남"){
+				bg = "#000080";
+			}else if(bg == "보"){
+				bg = "purple";
+			}else{
+				alert("지원하지 않는 색상");
+				return;
+			}
+			document.body.style.background = bg;
+		}
+	</script>
+	</head>
+	<body>
+		<button onclick=setBg()>
+			배경색 전환
+		</button>
+	</body>
+</html>

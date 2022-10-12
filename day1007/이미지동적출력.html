@@ -1,0 +1,90 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>이미지동적출력</title>
+	</head>
+	<style>
+		#wrapper {
+			width: 700px;
+			height: 700px;
+			background: yellow;
+			margin: auto;
+		}
+
+		#menu{
+			width: 100%;
+			height:100px;
+			background: pink;
+		}
+		#content{
+			width:100%;
+			height:600px;
+			background: gray;
+		}
+/*		선택자의 여러 표현방법을 익혀보자
+		선택자(한칸 띄고)자식선택자
+		*/
+		#menu img{/*#menu 하위의 자식 요소중 img 요소들을 선택하고 중괄호 안의 css들을 적용함*/
+			width: 70px;
+			height: 70px;
+		}
+
+		#content img{
+			width: 80px;
+			height: 80px;
+		}
+	</style>
+	<script>
+		let currentImg = "../images/hamberger.png";
+		let before;
+
+		function setTable(){
+			//사용자가 입력한 이미지를 대상으로, 행과 열 수만큼 이미지를
+			//동적(실행시)으로 content라는 div 영역 안에 출력
+			let content = document.querySelector("#content");
+			let getInputRow = document.querySelector("#row");
+			let getInputCol = document.querySelector("#col");
+
+			let tag="";
+			let row = parseInt(getInputRow.value);
+			let col=parseInt(getInputCol.value);
+			
+			getInputRow.value = getInputCol.value = "";
+			//반복문을 수행하기 전에 사용자가 입력한 행, 열의 수를 조사하자
+			for(let i = 0;i< row;i++){
+				for(let j =0;j<col;j++){
+					tag +="<img src=\"" + currentImg + "\"></img>";
+				}
+				tag += "<br>";
+			}
+			
+			content.innerHTML = tag;
+			
+		}
+
+		function setImg(){
+			if(before !== undefined) before.border = "";
+
+			let style = event.target.style;
+			currentImg = event.target.attributes.src.value;
+			style.border = "2px solid red";
+			before = style;
+		}
+	</script>
+	<body>
+		<div id="wrapper">
+			<div id="menu">
+				<img onclick=setImg() src="../images/hamberger.png"></img>
+				<img onclick=setImg() src="../images/pizza.png"></img>
+				<img onclick=setImg() src="../images/cola.png"></img>
+				<input id="row" type="text" placeholder="행의 개수 입력" size="10">
+				<input id="col" type="text" placeholder="열의 개수 입력"size="10">
+				<button onclick = setTable()>상차리기</button>
+			</div>
+			<div id="content"></div>
+		</div>
+	</body>
+</html>

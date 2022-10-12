@@ -1,0 +1,51 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>테이블출력</title>
+	</head>
+	<style>
+		
+	</style>
+	<script>
+		//write()에 지정한 문자열을 body태그안에 출력
+		//document.write("대한민국 <b>만세</b>");
+		let col = parseInt(prompt("원하는 층수 입력"));
+		let row = parseInt(prompt("원하는 호수 입력"));
+		document.write("<table border = \"1px\" align=\"center\">");
+		
+		for(let i = col;i>=1;i--){
+			document.write("<tr>");
+			for(let j = 1;j<=row;j++){
+
+				if(j>9)document.write("<td>" + i + j+"</td>");
+				else document.write("<td>" + i + "0" + j+"</td>");
+			}
+			document.write("</tr>");
+		}
+
+
+		document.write("</table>");
+		//document.write("영희가 철수에게 말했다. \"야이 바보야\"");
+
+	</script>
+	<body>
+	<!--
+	<table border = "1px"width="300px" align="center">	
+		<tr>
+			<td>301</td>
+			<td>302</td>
+			<td>303</td>
+		</tr>
+		<tr>
+			<td>201</td>
+			<td>202</td>
+			<td>203</td>
+		</tr>
+	</table>
+	-->
+
+	</body>
+</html>

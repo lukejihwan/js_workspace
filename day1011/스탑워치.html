@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper {
+        width: 900px;
+        height: 300px;
+        background-color: yellow;
+        border: 2px solid dodgerblue;
+        margin: auto;
+        text-align: center;
+        font-size: 80px;
+        /* 현재 div의 안의 내용물과의 거리를 증가시켜보자 */
+        padding-top: 20px;
+    }
+    #wrapper input{
+        width: 180px;
+        height: 200px;
+        font-size: 70px;
+        border: 2px solid red;
+        text-align: right;
+    }
+    button{
+        width: 200px;
+        height: 50px;
+        font-size: 45px;
+    }
+</style>
+<script>
+    let sec = 0; // 초를 누적시킬 전역변수
+    let min = 0; // 분을 누적시킬 전역변수
+    let hour = 0;// 시를 누적시킬 전역변수
+    function work(){
+        let getSec = document.querySelector("#timeSecond");
+        let getMin = document.querySelector("#timeMinute");
+        let getHour = document.querySelector("#timeHour");
+        sec++;
+        if(sec>59){
+            sec=0;
+            min++;
+        }
+        if(min>59){
+            min=0;
+            hour++;
+        }
+        if(hour>23){
+            hour=0;
+        }
+
+        getSec.value = sec;
+        getMin.value = min;
+        getHour.value = hour;        
+    }
+    function startTime(){
+        setInterval(work, 1000);
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <input id="timeHour" type="text" value=0>시
+        <input id="timeMinute" type="text" value=0>분
+        <input id="timeSecond" type="text" value=0>초
+        <button onclick=startTime()>Start!</button>
+    </div>
+</body>
+</html>

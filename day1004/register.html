@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <style>
+        /* cascating style sheet를 작성하는 태그
+            이런 방식을 임베디드 방식이라고 함
+        */
+        /* 문서 내에 있는 모든 ~를 대상으로 블록 안의 css 구문을 적용한다 */
+        td{
+            font-size: 16px;
+        }
+        input{
+            background-color: yellow;
+            border: 1px solid red;
+        }
+        select{
+            font-weight: bold;
+        }
+
+        .re :last-child input{
+            background-color: tomato;
+        }
+    </style>
+</head>
+<body>
+    <!-- css 적용시 해당 태그에 직접 적용하는 방식을 가리켜 인라인 방식
+    단점) 적용 대상이 많을때는 코드 작업량이 기하급수적으로 늘어남
+ -->
+    <table width="600px" border="1px" align="center">
+        <tr>
+            <td style="font-size:16px;">ID</td>
+            <td><input type="text" placeholder="아이디 입력"></td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td><input type="password" maxlength="12" placeholder="비밀번호 입력"></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input style="background-color: green;" type="text" placeholder="이메일 아이디 입력">@ 
+                <select  style="background-color: blue;">
+                    <option value="naver.com">네이버</option>
+                    <option value="gmail.com">구글</option>
+                    <option value="daum.net">다음</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="re">
+            <td>우편번호</td>
+            <td>
+                <input type="text" size="5" readonly>-<input type="text" size="5" readonly>
+                <input type="button" value="우편번호검색">
+            </td>
+        </tr>
+        <tr>
+            <td>주소</td>
+            <td>
+                <input type="text"><br>
+                <input type="text" placeholder="나머지 주소">
+            </td>
+        </tr>
+        <tr>
+            <td>취미</td>
+            <td>
+                독서<input type="checkbox">
+                암벽등반<input type="checkbox">
+                웨이크보드<input type="checkbox">
+                여행<input type="checkbox">
+                사진<input type="checkbox">
+            </td>
+        </tr>
+        <tr>
+            <td>메일수신</td>
+            <td>
+                예<input type="radio" name="receive">
+                아니오<input type="radio" name="receive">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button>가입</button>
+                <button>취소</button>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

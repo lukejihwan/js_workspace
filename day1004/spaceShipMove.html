@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: url(../images/bg_game.png);
+            background-size: 100vw 100vh;
+
+        }
+
+        img{
+            width: 100px;
+            /* 태그의 위치를 조정 position */
+            position: absolute 부모 요소를 기준으로 한 위치;
+            transform: rotate(90deg);
+            left: 100px;
+        }
+        
+        table{
+            background-color: orange;
+        }
+    </style>
+    <script>
+        let x = 0;
+        let ship = 0;
+        function moveBg(){
+            x = x-10;
+         document.body.style.backgroundPosition =x +  "px 0px";
+        setTimeout(moveBg, 16);
+        }
+        function moveRight(){
+            ship += 100;
+            document.querySelector("img").style.left = ship+"px";
+        }
+    </script>
+</head>
+<body>
+    <!-- <img src="../images/1.jpg" alt=""> -->
+    <button onclick=moveBg()>배경 앞으로</button>
+    <table border="1px">
+        <tr>
+            <td></td>
+            <td>▲</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>◀</td>
+            <td>▼</td>
+            <td onclick=moveRight()>▶</td>
+        </tr>
+    </table>
+    <img style="position: absolute;" src="../images/icon_spaceShip.png" alt="">
+</body>
+</html>

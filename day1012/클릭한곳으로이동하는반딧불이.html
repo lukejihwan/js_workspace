@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        background-image: url("../images/nightsky.jpg");
+        background-size: 100% 700px;
+        width: 100%;
+        height: 700px;
+    }
+    img{
+        width: 100px;
+
+    }
+    button{
+        z-index: 3;
+    }
+</style>
+<script src="../lib/util.js">
+</script>
+<script>
+    let a = 0.1; //다가갈 정도를 표현하는 비율 계수
+    // 비율계수가 커질수록 보폭이 커지므로 너무 커지면 투박해진다
+    //알아서 조절하자(0.1이 자연스럽다)
+    let targetX = 800; //반딧불이 도달할 목표 x축 지점;
+    let targetY = 300;
+    let bug;
+    //3초간격으로 사용자대신 랜덤함수를 호출하여 반딧불의
+    // 목표지점을 대신 지정해주는 함수정의
+    function autoTarget(){
+        targetX = getRantom(1000);
+        targetY = getRantom(700);
+        setTimeout(autoTarget, 2000);
+    }
+    function move(){
+        //반디불을 특정 좌표로 이동해보기
+        //버그위치 = 기존버그위치 + 감속도 * (목표-기존버그위치)
+        bug.left = parseInt(bug.left) + a * (targetX - parseInt(bug.left)) + "px";
+        bug.top = parseInt(bug.top) + a * (targetY - parseInt(bug.top)) + "px";
+    }
+    function setTarget(){
+        //반딧불이의 새로운 좌표를 마우스를 이용하여 설정해주자
+        // 즉 마우스르 ㄹ누를 때 그 좌표를 구하여 targetX, targetY 값을
+        // 설정해주자
+        targetX = event.clientX;
+        targetY = event.clientY;
+        console.log(targetX, targetY);
+    }
+    function init(){
+        //프로그램이 가동되자마자 초기화할 작업이 있다면 여기서 하자
+        bug = document.querySelector("#bug").style;
+        bug.position = "absolute";
+        bug.left = "0px";
+        bug.top = "0px";
+        let c = setInterval(move, 16);
+        autoTarget();
+        // setTimeout(()=>clearInterval(c), 3000);
+
+    }
+</script>
+<body onmousemove=setTarget() onload=init()>
+    <div id="wrapper">
+        <img src="../images/lit.jpg" alt=""  id="bug">
+        <button onclick=move()>수동테스트</button>
+    </div>
+</body>
+</html>

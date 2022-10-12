@@ -1,0 +1,74 @@
+<!--아래와 같이 doctype이 붙으면 html5를 의미하고 html5 차제세 html로써
+	스마트폰 등의 다양한 디바이스에 호환 되도록 지원함-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		/* div는 기본적으로 텅 비어있는 태그이므로 눈에 보이지 않는다
+			따라서 시각적인 확인을 위해 배경색을 입혀보자*/
+			#wrapper{
+				background-color: pink;
+				/*div 영역을 넘어설때 넘어서는 부분은 안보이게 처리
+				주의) 보통 레이아웃 작업시 자식이 float 될 때 부모에게 묻지도 따지지도 말고 overflow: hidden; 주기*/
+				width: 800px;
+				height: 800px; 
+				overflow: hidden;
+				margin: auto;
+			}
+
+			#box1{
+				background-color: #eee;
+				width: 100px;
+				height: 100%;
+				float: left; /*현재의 태그를 z축으로 띄움*/
+			}
+			#box2{
+				background-image: url("../images/room.jpg");
+				width: 700px;
+				height: 100%;
+				float: left;
+				margin: auto;
+			}
+
+			#blind{
+				width: 100%; /*box2 안에 같혀있기 때문에 그 안에서의 100%*/
+				height: 100%; /*높이가 부모에 다다를 때까지*/
+				background-color: black;
+				opacity: 0.8;
+			}
+
+	</style>
+	<script>
+		let flag = false; //삼항연산자의 조건 판단의 기준이 되는 변수
+		let opaFlag = false;
+		function onOff(){
+			flag = !flag;
+			opaFlag = !opaFlag;
+			let sw = document.getElementById("sw")
+			let op = flag ? "on" : "off";
+			sw.src="../images/switch_"+ op +".png";
+			
+			let blind = document.getElementById("blind");
+			blind.style.opacity = opaFlag ? 0: 0.8; 
+		}
+	</script>
+	</head>
+	<body>
+		<!--문서의 레이아웃을 결정하는 태그	-->
+		<div id = "wrapper">
+			<div id="box1">
+				<img 
+					src="../images/switch_off.png"
+					onclick=onOff();
+					id="sw"
+				></img>
+			</div>
+			<div id="box2">
+				<div id="blind">abcd</div>
+			</div>	
+		</div>
+		
+	</body>
+</html>
