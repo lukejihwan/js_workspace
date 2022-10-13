@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>단어게임</title>
+</head>
+<style>
+    #wrapper{
+        width: 500px;
+        height: 650;
+        margin: auto;
+        border: 5px solid cornflowerblue;
+    }
+    #wrapper div{
+        width: 100%;
+    }
+    #wordArea{
+        background-color: aquamarine;
+        height: 200px;
+        font-size: 80px;
+        text-align: center;
+        /* 내용물과 박스벽과의 간격 늘리기 */
+        padding-top: 30px;
+        box-sizing: border-box;
+    }
+    #inputArea{
+        height: 150px;
+        background-color: pink;
+    }
+    #inputArea input{
+        width: 98%;
+        height: 95%;
+        font-size: 65px;
+        text-align: center;
+    }
+    #feedbackArea{
+        background-color: yellow;
+        height: 200px;
+        font-size: 150px;
+        text-align: center;
+    }
+    #scoreArea{
+        background-color: greenyellow;
+        height: 100px;
+        font-size: 60px;
+        text-align: center;
+    }
+</style>
+<script>
+    //게임에 사용 할 단어 10개를 준비하되, 이 단어들간의 순서가있어야 한다
+    let word = [
+        "샐러드",
+        "국밥",
+        "햄버거",
+        "피자",
+        "치킨",
+        "빵",
+        "소시지",
+        "커피",
+        "밀크셰이크",
+        "스파게티"
+    ]
+    let n = 0;
+    let getWord;
+    let keyIn;
+    let getFeedback;
+    let getScore;
+    let score = 0;
+    addEventListener("load", init);
+    function init(){
+        //프로그램에서 자주 사용될 변수들을 전역으로 빼놓자
+        getWord = document.querySelector("#wordArea");
+        keyIn = document.querySelector("#keyInput");
+        getFeedback = document.querySelector("#feedbackArea");
+        getScore = document.querySelector("#scoreArea");
+        //프로그램이 가동되면 제일 첫 단어가 등장함
+        printWord();
+        //단어입력 컴포넌트에 리스너 연결
+
+        keyIn.addEventListener("keyup", function(){
+            if(event.keyCode === 13) {
+                //현재 보고있는 단어의 다음 단어가 나오게
+                if(getWord.innerText === keyIn.value){
+                   //보고있는 단어와 입력한 단어가 같다면 
+                   n++;
+                   printWord();
+                   getFeedback.innerText = "O";
+                   score += 10;
+                   getScore.innerText = score + "점";
+
+                }else{
+                    getFeedback.innerText = "X";
+                }
+                //입력한 텍스트 다시 초기화
+                keyIn.value = "";
+            }
+        })
+
+        // 유저들을 위해 커서를 미리 올려놓자
+        keyIn.focus();
+    }
+    function printWord(){
+        getWord.innerText = word[n];
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="wordArea"></div>
+        <div id="inputArea">
+            <input id="keyInput"type="text">
+        </div>
+        <div id="feedbackArea"></div>
+        <div id="scoreArea">0점</div>
+    </div>
+</body>
+</html>

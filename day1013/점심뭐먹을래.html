@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        width: 600px;
+        height: 100px;
+        background-color: pink;
+        border: 2px solid hotpink;
+    }
+    #wrapper img{
+        width: 100px;
+        height: 100px;
+    }
+    #selected{
+        width: 600px;
+        height: 600px;
+    }
+</style>
+<script src="../lib/util.js"></script>
+<script>
+    let bt;
+    let wrapper;
+    let selectedImg
+    let arr = ["pizza.png", "cola.png", "hamberger.png", "pasta.png", "burrito.png"];
+    addEventListener("load", init);
+    function init(){
+        bt = document.createElement("button");
+        
+        bt.innerText = "점심추천";
+        document.body.appendChild(bt);
+        
+        popUp()
+        
+        bt.addEventListener("click", selectedByRandom);
+
+        selectedImg = document.createElement("img");
+        selectedImg.id = "selected";
+        document.body.appendChild(selectedImg);
+
+        
+    }
+
+    function popUp(){
+        wrapper = document.createElement("div");
+        wrapper.id = "wrapper";
+        let divs = []
+        for(let i =0;i<arr.length;i++){
+            let temp = document.createElement("img");
+            temp.src = "../images/" + arr[i];
+            temp.onclick = selectedByClick;
+            divs.push(temp);
+        }
+        for(let i =0; i<divs.length;i++){
+            wrapper.appendChild(divs[i]);
+        }
+        document.body.appendChild(wrapper);
+    }
+
+    function selectedByRandom(){
+        selectedImg.src = "../images/" + arr[getRandom(arr.length)];
+    }
+    function selectedByClick(event){
+        selectedImg.src = event.target.src;
+    }
+
+</script>
+<body>
+</body>
+</html>

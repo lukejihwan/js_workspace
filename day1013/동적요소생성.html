@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    /* 지금까지는 body영역에 태그를 작성하고 이벤트 핸들러를 연결해왔다
+    하지만 자바스크립트에서도 동적으로 동일한 작업 이 가능하다 */
+    function createBtn(){
+        let img = document.createElement("img");
+        img.src = "../images/mon.jpg";
+
+        // 이미지의 요소에 클릭 이벤트 구현
+        img.addEventListener("mouseover", function(){
+            alert("올렸음");
+        });
+
+        document.body.appendChild(img);
+    }
+    addEventListener("load", function(){
+        console.log(event.target)
+        createBtn();
+    })
+</script>
+<body>
+    
+</body>
+</html>

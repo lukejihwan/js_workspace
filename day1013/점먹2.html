@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        width: 700px;
+        height: 800px;
+        background-color: pink;
+        margin: auto;
+    }
+    #content{
+        width: 600px;
+        height: 100px;
+        background-color: yellow;
+        float: left;
+    }
+    #content img{
+        width: 100px;
+        height: 100%;
+    }
+    #control{
+        width: 100px;
+        height: 100px;
+        float: left;
+    }
+    #control button{
+        width: 100%;
+        height: 100%;
+    }
+    #content2{
+        float:left;
+        width: 100%;
+        height: 700px;
+
+    }
+    #content2 img{
+        width: 100%;
+        height: 100%;
+    }
+    #isNone{
+        display: none;
+    }
+</style>
+<script>
+    let arr = ["pizza.png", "cola.png", "hamberger.png", "pasta.png", "burrito.png"];
+    let content;
+    let pointer = 0;
+    let before;
+    let controlButton;
+    let intervalID;
+    let toggle = false;
+    let content2Img;
+
+    addEventListener("load", init)
+
+    function init(){
+        content  = document.querySelector("#content");
+        controlButton = document.querySelector("#control button");
+        content2Img = document.querySelector("#content2 img");
+        for(let i =0;i<arr.length;i++){
+            let temp = document.createElement("img");
+            temp.src= "../images/" + arr[i];
+            content.appendChild(temp);
+        }
+        intervalID = setInterval(revolvingBorder, 200);
+        
+        controlButton.addEventListener("click", function(){
+            if(toggle){
+                intervalID = setInterval(revolvingBorder, 200);
+
+            }else{
+                clearInterval(intervalID);
+            }
+            toggle = !toggle;
+            showSelectedImg();
+        })     
+    }
+
+    function revolvingBorder(){
+        if(before !== undefined){
+            before.style.border = "";
+        }
+        if(pointer>=arr.length){
+            pointer = 0
+        }
+        let getImg = document.querySelector(`#content img:nth-child(${++pointer})`);
+        getImg.style.border = "1px solid red";
+        before = getImg;
+    }
+
+    function showSelectedImg(){
+        if(toggle){
+            content2Img.src = "../images/" + arr[pointer-1];
+            content2Img.id = "";
+        }else{
+            content2Img.src = "";
+            content2Img.id = "isNone";
+        }
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="control">
+            <button>선택</button>
+        </div>
+        <div id="content">
+        </div>
+        <div id="content2">
+            <img id="isNone" src="" alt="">
+        </div>
+    </div>
+</body>
+</html>
