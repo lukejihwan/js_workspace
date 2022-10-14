@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>연속되는 컨베이어</title>
+    <style>
+      #wrapper {
+        width: 400px;
+        height: 110px;
+        background-color: greenyellow;
+        margin: auto;
+        overflow: hidden;
+      }
+    </style>
+    <script>
+      let wrapper;
+      let boxes = [];
+      let colors = [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "navy",
+        "purple",
+      ];
+
+      const BOXES_LENGTH = 5;
+
+      function move() {
+        // box들이 회전하는 로직을 구현
+        for (let i = 0; i < boxes.length; i++) {
+          //boxes배열에 있는 모든 box들을 move가 호출될때마다 4px씩 왼쪽으로 이동함
+          boxes[i].style.left = parseInt(boxes[i].style.left) - 4 + "px";
+          if (parseInt(boxes[i].style.left) <= -100)
+            // 만약 어떤 box의 left가 -100px보다 작아진다면
+            // box들이 있을 수 있는 위치들 중 맨 오른쪽으로 보냄
+            boxes[i].style.left = (boxes.length - 1) * 100 + "px";
+        }
+      }
+      function gameLoop() {
+        // move함수를 자동 호출하여 컨베이어가 자동으로 돌아가게 만들기 위한 함수
+        setInterval(move, 16.666); // 60fps
+      }
+      function createBox(n) {
+        // box를 생성하는 함수
+        let box = document.createElement("div");
+        let boxStyle = box.style;
+        boxStyle.width = 100 + "px";
+        boxStyle.height = 100 + "px";
+        boxStyle.backgroundColor = colors[n];
+        boxStyle.position = "absolute";
+        boxStyle.left = n * 100 + "px";
+        return box;
+      }
+      function createBoxes(n) {
+        // box를 생성해서 wrapper에 붙여주는 동시에 따로 만들어두었던 전역 변수의 배열에 따로 빼주기
+        for (let i = 0; i < n; i++) {
+          boxes.push(createBox(i));
+          wrapper.appendChild(boxes[i]);
+        }
+      }
+
+      function init() {
+        // wrapper 엘레멘트 가져와서 전역변수에 넣고 box들을 위해 포지션을 relative로 설정
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.position = "relative";
+      }
+      addEventListener("load", function () {
+        init();
+        createBoxes(BOXES_LENGTH);
+        gameLoop();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper"></div>
+  </body>
+</html>
