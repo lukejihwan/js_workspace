@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연속되는 컨베이어</title>
+</head>
+<style>
+    #wrapper{
+        background-color: greenyellow;
+        margin: auto;
+        overflow: hidden;
+    }
+</style>
+<script>
+    let boxs = [];
+    let colors = [
+        "red", 
+        "orange", 
+        "yellow", 
+        "green", 
+        "blue", 
+        "navy", 
+        "purple", 
+    ]
+    let wrapper;
+    let content;
+    let x = 0;
+
+    const MAX_LENGTH = 6;
+    const BOX_QUANTITY = 7;
+    const BOX_WIDTH = 100;
+
+    addEventListener("load", function(){
+        init();
+        putBoxs();
+        gameLoop();
+    })
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.width = MAX_LENGTH * BOX_WIDTH + "px";
+        wrapper.style.height = 110 + "px";
+        wrapper.style.position = "relative";
+        content = document.querySelector("#content");
+        content.style.height = 100 + "px";
+        content.style.width = ((MAX_LENGTH * 2) + (BOX_QUANTITY-MAX_LENGTH)) * BOX_WIDTH + "px";
+        content.style.position = "absolute";
+        content.style.left = 0 + "px";
+    }
+    function putBoxs(){
+        makeBox(0, MAX_LENGTH);
+        makeBox(MAX_LENGTH, (BOX_QUANTITY-MAX_LENGTH) + MAX_LENGTH);
+        makeBox(0, MAX_LENGTH);
+        function makeBox(n, m){
+            for(let i = n; i<m;i++){
+                let box = document.createElement("div");
+                box.style.width = BOX_WIDTH + "px";
+                box.style.height = 100 + "px";
+                box.style.float = "left";
+                box.style.background = colors[i];
+                boxs.push(box);
+            }
+        }
+        for(let i =0;i<boxs.length;i++) content.appendChild(boxs[i]);
+    }
+    function move(){
+        console.log(parseInt(content.style.left))
+        console.log(-1 * BOX_QUANTITY * BOX_WIDTH)
+        if(parseInt(content.style.left) <= -1 * BOX_QUANTITY * BOX_WIDTH){
+            x = 0;
+        }
+        x -= 10;
+        content.style.left = x + "px";
+    }
+    function gameLoop(){
+        setInterval(move, 50);
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="content"></div>
+    </div>
+</body>
+</html>
