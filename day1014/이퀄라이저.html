@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이퀄라이저</title>
+</head>
+<style>
+    body{
+        margin: 0px;
+    }
+    #wrapper{
+        width: 700px;
+        height: 400px;
+        background-color: yellowgreen;
+        margin: auto;
+    }
+</style>
+<script src="../lib/util.js"></script>
+<script>
+    let wrapper;
+    let bar = new Array(7);
+    let color = ["red", "orange", "yellow", "green", "blue", "navy", "purple"];
+    let a = 0.1;
+    let targetH = new Array(bar.length);
+    addEventListener("load", function(){
+        init();
+        gameLoop();
+        setInterval(setTarget, 700);
+    });
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        // div를 이퀄라이저 막대로 이용하기 위해 동적으로 div엘레멘트를 만들자
+        for(let i =0;i<bar.length;i++){
+        bar[i] = document.createElement("div");
+        bar[i].style.width = 50 + "px";
+        bar[i].style.height = 400 + "px";
+        bar[i].style.background = color[i];
+        bar[i].style.position = "absolute";
+        bar[i].style.left = i * 50 + "px";
+        bar[i].style.bottom=0 + "px";
+        wrapper.appendChild(bar[i]); //막대부착
+        }
+        //wrapper에 부착하자
+        wrapper.style.position = "relative";
+    }
+    function gameLoop(){
+        setInterval(move, 16);
+    }
+    function move(){
+        //막대의 위치를 감속도 운동으로 변하게 하는 함수
+        //막대 높이는 = 막대높이 + 비율 (목표높이 - 막대높이);
+        for(let i =0;i<bar.length;i++){
+            bar[i].style.height = parseFloat(bar[i].style.height) + a * (targetH[i] - parseFloat(bar[i].style.height)) + "px";
+            bar[i].innerText = bar[i].style.height;
+        }
+    }
+    function setTarget(){
+        //지정한 시간 간격으로 targetH값을 랜덤하게 변경하는 함수
+        //targetH값만 변경해도 루프에 의에 bar의 height가 변하는것을 볼 수 있다
+        for(let i =0;i<targetH.length;i++){
+            targetH[i] = getRandomWithRange(10, 400);
+            console.log(i + ": "+targetH[i])
+        }
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점심뭐먹을래3</title>
+</head>
+<style>
+    #wrapper{
+        width: 300px;
+        height: 300px;
+        margin: auto;
+        background-color: yellow;
+    }
+</style>
+<script src="../lib/util.js"></script>
+<script>
+/* 300, 300 250 50 */
+//높이250인 div 생성
+//남은 공간에는 버튼 생성
+let content;
+let button;
+let img; //현재 생성되어있는 이미지
+let a = 0.1; //가속계수
+let targetX = 0; //이미지가 도달할 목표지점
+let ID;
+let foods = [
+        "pasta.png", 
+        "pizza.png", 
+        "cola.png", 
+        "hamberger.png", 
+        "burrito.png"
+    ]
+    addEventListener("load", function(){
+        init();
+        // gameLoop();
+    });
+    function init(){
+        //div를 동적으로 만들어 wrapper에 넣기
+        content = document.createElement("div");
+        content.style.width = 300 + "px";
+        content.style.height = 250+ "px";
+        content.style.backgroundColor = "pink";
+        content.style.position = "relative";
+        content.style.overflow="hidden"; //div를 벗어난 컨텐츠에 대해 보이지 않게 할 것
+
+        //버튼생성
+        button = document.createElement("button");
+        button.innerText = "추천실행";
+
+        
+        //부착
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.textAlign = "center";
+
+        wrapper.appendChild(content);
+        wrapper.appendChild(button);
+        
+        // 버튼과 리스너 연결
+        button.addEventListener("click", function(){
+            execute();
+            ID = gameLoop();
+        })
+    }
+    //프로그램에서 무언가를 지속적으로 움직이게 하려면, 즉
+    // 애니메이션 효과를 주려면 지속적인 호출을
+    // 시도하는 루프를 만들어야 하는데
+    // 주의할점은 특별한 경우가 아니라면 루프를 하나를 두어야 함
+    function gameLoop(){
+        return setInterval(move, 16);
+    }
+    //content에 부착된 이미지의 위치를 left 값 0 향해서 수렴을 수 있도록
+    // 감속도 처리를 하자
+    function move(){
+        if(img !== undefined){
+            if(Math.round(parseFloat(img.style.left)) !== targetX){
+                img.style.left = parseFloat(img.style.left) + a * (targetX - parseFloat(img.style.left)) + "px";
+            }else{
+                img.style.left = Math.round(parseFloat(img.style.left));
+                clearInterval(ID);
+            }
+            console.log(img.style.left);
+        }
+
+    }
+
+
+    function execute(){
+        //기존에 만약 이미지 객체가 존재한다면 제거하자
+        if(img !== undefined) content.removeChild(img);
+
+        //이미지를 동적으로 생성하여, content에 부착
+        img = document.createElement("img");
+        img.src = "../images/" + getRandomImg();
+
+
+        img.style.position = "absolute";
+        img.style.left = -300 + "px";
+        img.style.width = "300px";
+        img.style.height = "250px";
+
+        //content div에 지금 만든 이미지객체를 붙이자
+        content.appendChild(img);
+    }
+
+    //이미지명을 반환하는 함수(이미지 자체 아님)
+    function getRandomImg(){
+        return foods[getRandom(foods.length)];
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

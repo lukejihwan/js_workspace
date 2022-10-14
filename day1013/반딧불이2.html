@@ -8,8 +8,13 @@
 </head>
 <style>
     body{
+        margin: 0;
+    }
+    #wrapper{
+        width: 100vw;
+        height: 100vh;
         background-image: url("../images/nightsky.jpg");
-        background-size: 100vw 100vh
+        background-size: 100vw 100vh;
     }
     #pic{
         width: 100px;
@@ -22,32 +27,58 @@
     let targetX = 400;
     let targetY = 400;
     let a = 0.1;
+    let timerFlag = false
+    let timerID;
+    let wrapper;
 
     addEventListener("load", init);
     function init(){
+        wrapper = document.querySelector("#wrapper");
         bt = document.querySelector("#a");
         bt2 = document.querySelector("#b");
-        bt.addEventListener("click", move);
+        bt.addEventListener("click", manual);
         pic = document.querySelector("#pic")
         bt2.addEventListener("click", auto);
+        wrapper.addEventListener("click", setTarget);
+        wrapper.style.position = "relative";
+        wrapper.style.overflow = "hidden";
 
         pic.style.position = "absolute";
         pic.style.left = "100px";
         pic.style.top = "100px";
     }
-
+    function setTarget(){
+        if(event.target === this){
+            console.log(event)
+            targetX = event.clientX;
+            targetY = event.clientY;
+        }
+    }
     function move(){
         pic.style.left = parseFloat(pic.style.left) + a *  (targetX - parseFloat(pic.style.left)) + "px";
         pic.style.top = parseFloat(pic.style.top) + a *  (targetY - parseFloat(pic.style.top)) + "px";
     }
 
     function auto(){
-        setInterval(move,16);
+        if(!timerFlag){
+            timerID = setInterval(move,16);
+            timerFlag = true;
+        }
+    }
+    function manual(){
+        if(timerFlag){
+            clearInterval(timerID)
+            timerFlag = false;
+        }
+        // event.stopPropagation();
+        move();
     }
 </script>
 <body>
-    <button id="a">수동</button>
-    <button id="b">자동</button>
-    <img id="pic" src="../images/lit.jpg" alt="">
+    <div id="wrapper">
+        <button id="a">수동</button>
+        <button id="b">자동</button>
+        <img id="pic" src="../images/lit.jpg" alt="">
+    </div>
 </body>
 </html>
