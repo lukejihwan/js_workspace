@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또</title>
+</head>
+<style>
+    #wrapper{
+        width: 600px;
+        height: 100px;
+        background-color: yellow;
+        margin: auto;
+    }
+</style>
+<script src="../lib/util.js"></script>
+<script>
+    let wrapper;
+    let lotto = []
+    let colorArray = ["pink", "orange", "yellow", "green", "blue", "navy"]
+    let count = 0 // 배열에 존재할 경우 증가될 카운트 변수
+    let id;
+    const BALL_LENGTH = 6;
+    const BALL_WIDTH = 100;
+    addEventListener("load", ()=>{
+        init()
+    })
+    function init(){
+        wrapper = document.querySelector("#wrapper")
+        wrapper.style.position = "relative"
+    }
+    function createBall(){
+        let ball = document.createElement("div")
+        ball.style.width = BALL_WIDTH + "px"
+        ball.style.height = BALL_WIDTH + "px"
+        ball.style.position = "absolute"
+        ball.style.left = (lotto.length - 1) * BALL_WIDTH + "px"
+        ball.style.background = "red"
+        ball.style.borderRadius = "50%"
+        ball.style.backgroundImage = "linear-gradient(red, "+colorArray[lotto.length-1]+")"
+        ball.style.textAlign = "center"
+        ball.style.fontSize = 50 + "px"
+        ball.style.paddingTop = 15 + "px"
+        ball.style.boxSizing = "border-box"
+        
+        wrapper.appendChild(ball)
+        return ball;
+    }
+    function getNum(){
+        // 로또번호 추출하기
+        //1~45 사이의 임의의 번호를 추출
+        let n = getRandomWithRange(1, 45)
+        // 방금 추출된 n이 기존 배열인 lotto에 없을때만 push;
+        for(let i = 0;i<lotto.length;i++){
+            if(lotto[i] == n){
+                count++;
+                console.log(n, "에 대해 중복 발견")
+            }
+        }
+        if(count < 1){
+            lotto.push(n)
+            createBall().innerText = lotto[lotto.length-1];
+        }else{
+            count = 0;
+        }
+        console.log(lotto)
+        if(lotto.length>=BALL_LENGTH){
+            clearInterval(id);
+            wrapper.style.background = "white"
+        }
+        // 만약에 카운트가 0보다 크다면? 다시 재시도
+    }
+
+    function start(){
+        // 기존배열의 요소들을 제거하자
+        if(lotto.length>0){
+            let len = wrapper.children.length;
+            for(let i =0;i<len;i++){
+                wrapper.removeChild(wrapper.children[0]);
+                lotto.splice(0, 1);
+            }
+            clearInterval(id);
+        }
+        wrapper.style.background = "yellow";
+        id = setInterval(getNum, 1000);
+        }
+</script>
+<body>
+    <div id="wrapper"></div>
+    <button onclick=start()>추첨실행</button>
+</body>
+</html>

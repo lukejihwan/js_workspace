@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .menuStyle{
+        /* 클래스: 디자인의 대상이 명시되어있지 않고, 역으로 먼저
+        디자인 스타일을 정의한 후, 이 디자인을 적용하고싶은 대상에
+        class를 명시하면 됨 */
+        background-color: #cccccc;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+    }
+    #notice{
+        background-color: coral;
+    }
+    #qna{
+        background-color: greenyellow;
+    }
+    #faq{
+        background-color: aquamarine;
+    }
+</style>
+<script>
+    let tables
+    let before;
+    let tabs
+    addEventListener("load", function(){
+        init()
+    })
+    function init(){
+        tables = document.getElementsByName("board")
+        tabs = document.querySelectorAll("#tab span")
+        // 3개의 게시판 테이블 중. 첫번째 테이블만 보이게 처리
+        showHide();
+        addListeners();
+
+        
+    }
+    function showHide(){
+        tables[0].style.display="block"
+        before = tables[0];
+        for(let i = 1;i<tables.length;i++){
+            tables[i].style.display="none";
+        }
+    }
+    function addListeners(){
+        for(let i =0;i<tabs.length;i++){
+            tabs[i].addEventListener("click", ()=>{
+                clickedTableHandle(i)
+            })
+        }
+    }
+    function clickedTableHandle(i){
+        before.style.display = "none";
+        tables[i].style.display="block"
+        before = tables[i]
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="tab">
+            <span class="menuStyle" id="notice">Notice</span>
+            <span class="menuStyle" id="qna">QnA</span>
+            <span class="menuStyle" id="faq">FAQ</span>
+        </div>
+        <div id="content">
+            <!-- Notice 시작 -->
+            <table name="board" border="1px" width="100%" style="background-color: coral;">
+                <thead>
+                    <td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- QnA 시작 -->
+            <table name="board" border="1px" width="100%" style="background-color: greenyellow;">
+                <thead>
+                    <td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- FAQ 시작 -->
+            <table name="board" border="1px" width="100%" style="background-color: aquamarine;">
+                <thead>
+                    <td>No</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>조회수</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>카톡 서비스 중지 알림</td>
+                        <td>관리자</td>
+                        <td>2022-10-17</td>
+                        <td>45785</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

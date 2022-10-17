@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이퀄라이저2</title>
+</head>
+<style>
+    #wrapper{
+        width: 350px;
+        height: 500px;
+        background-color: greenyellow;
+        margin: auto;
+    }
+</style>
+<script>
+    let wrapper;
+    let colors = ["red", "orange", "yellow","green", "blue", "navy", "purple"]
+    let a = 0.1;
+    
+    const BAR_WIDTH = 50;
+    const BAR_HEIGHT = 10;
+    let targetY = new Array(colors.length).fill(BAR_HEIGHT);
+
+    addEventListener("load", ()=>init())
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.position = "relative";
+        createBars();
+
+        wrapper.addEventListener("mousemove", mouseMoveHandle)
+    }
+    function createBar(i){
+        let bar = document.createElement("div" );
+        bar.style.width = BAR_WIDTH + "px";
+        bar.style.height = BAR_HEIGHT + "px";
+        bar.style.position = "absolute";
+        bar.style.left = i * BAR_WIDTH + "px"
+        bar.style.backgroundColor = colors[i];
+        wrapper.appendChild(bar);
+
+    }
+    function createBars(){
+        for(let i =0;i< colors.length;i++){
+            createBar(i);
+        }
+    }
+    function mouseMoveHandle(){
+        // console.log(event)
+        for(let i =0;i<colors.length;i++){
+            let distanceBetweenBars = Math.abs(parseInt(event.layerX / BAR_WIDTH) - i);
+            for(let j = 0;j<distanceBetweenBars;j++){
+                // targetY[i] = targetY[i] + a * (event.layerY - targetY[i]);
+                console.log(event.layerY)
+            }
+        }
+    }
+    function move(){
+        for(let i =0;i<colors.length;i++){
+            let bar = document.querySelectorAll("#wrapper div");
+            if(targetY[i] !== undefined){
+                bar[i].style.height = parseFloat(bar[i].style.height) + a * (targetY[i] - parseFloat(bar[i].style.height)) + "px";
+            }
+        }
+    }
+
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

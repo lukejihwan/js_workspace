@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #wrapper{
+        width: 400px;
+        height: 100px;
+        margin: auto;
+        background-color: yellow;
+    }
+</style>
+<script>
+    //  상품에 사용 될 이미지명을 배열로 선언한다
+    // 왜 배열로 하나? 순서가 있으면 반복문의 대상이 될 수 있고
+    // 규칙이 있다는 것은 프로그램으로 개발시 응용할 수 있는 가능성이 무궁무진함
+    let nameArray = [1,2,3,4,5,6]
+    let wrapper
+    let imgArray = []
+    let x = 4;
+    addEventListener("load", function(){
+        init()
+    })
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.position = "relative"
+        createImg();
+    }
+    function createImg(){
+        for(let i =0;i<nameArray.length;i++){
+            let img = document.createElement("img")
+            img.src = "../images/" + nameArray[i] + ".jpg";
+            img.style.width = 100 + "px"
+            img.style.height = 100 + "px"
+            img.style.position = "absolute";
+            img.style.left = i * 100 + "px"
+            img.style.top = 30 + "px"
+            wrapper.appendChild(img)
+            imgArray.push(img);
+            // 배열 선언시 해당 배열의 크기를 명시한적이 없기 때문에
+            // 지금 넣을 요소를 며번째에 넣을지 개발자가 고민할 필요없이
+            // 그냥 기존 배열에 추가하는 개념을 표현한  함수가 push()이다
+        }
+    }
+    function move(){
+        // 전체 이미지 움직이기
+        for(let i =0;i<nameArray.length;i++){
+            imgArray[i].style.left = parseInt(imgArray[i].style.left) + -x + "px"
+            if(parseInt(imgArray[i].style.left) <= -100) imgArray[i].style.left = (nameArray.length -1) * 100 + "px"
+        }
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

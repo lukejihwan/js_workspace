@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>왔다갔다</title>
+</head>
+<style>
+    body{
+
+    }
+</style>
+<script>
+    let box;
+    let x;
+    let flag = true;
+    function init(){
+        createRect();
+    }
+    
+    function createRect(){
+        //이미지를 사용하지 않고 css만으로 원 만들기
+        box = document.createElement("div");
+        box.style.width = 50 + "px";
+        box.style.height = 50 + "px";
+        box.style.background = "red";
+        box.style.position = "absolute";
+        box.style.left = 0 + "px";
+        box.style.top = 100 + "px";
+        box.style.textAlign = "center";
+        //모든 태그 요소는 박스로 취급되며, 이 박스의 테두리를
+        // 무디게 처리하는 속성이 radius다.
+        box.style.borderRadius = "30px"
+        document.body.appendChild(box)
+
+        x = parseInt(box.style.left);
+    }
+    function move(){
+        //한계점에 도달하면 x를 감소시킴
+        if(flag){
+            x += 5;
+            if(x>=300) flag = !flag;
+        }else{
+            x -= 5;
+            if(x<=0) flag = !flag;
+        }
+        box.style.left = x + "px";
+        // 현재 상태를 출력
+        box.innerText = box.style.left;
+    }
+    function auto(){
+        // 자동이란 이미 만들어진 수동을 사람이 아닌 컴퓨터가 호출
+            setInterval(move, 50)
+    }
+    addEventListener("load", function(){
+        init()
+    })
+</script>
+<body>
+    <button onclick=move()>수동</button>
+    <button onclick=auto()>자동</button>
+</body>
+</html>
