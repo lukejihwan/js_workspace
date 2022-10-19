@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* div{
+        user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+    } */
+</style>
+<script>
+    const WRAPPER_WIDTH = 700;
+    const WRAPPER_HEIGHT = 700;
+    const CELL_SIZE = 25;
+    const CELL_ROWS = WRAPPER_WIDTH / CELL_SIZE;
+    const CELL_COLS = WRAPPER_HEIGHT / CELL_SIZE;
+
+    let wrapper;
+    let flag = false;
+
+    let cells = [];
+    let delayCount = 0; // for문의  i대체
+    addEventListener("load", function(){
+        init();
+    })
+
+    let record = []
+    let timerID;
+    function init(){
+        createButton();
+        createWrapper()
+        createCell();
+    }
+    function createCell(){
+        // 그림판을 이루는 하나하나의 셀을 생성하자
+        for(let i =0;i< CELL_ROWS;i++){
+            let temp = []
+            for(let j = 0;j<CELL_COLS;j++){
+                let cell = document.createElement("div")
+                let cs = cell.style;
+                cs.width = CELL_SIZE + "px";
+                cs.height = CELL_SIZE + "px";
+                cs.background = "yellow"
+                cs.border = "1px solid red"
+                cs.position = "absolute";
+                cs.left = CELL_SIZE * i + "px";
+                cs.top = CELL_SIZE * j + "px";
+                
+                wrapper.appendChild(cell);
+
+                temp.push(cell);
+
+                // 각 셀에 이벤트 연결
+                cell.addEventListener("mousemove",function(){
+                    if(flag){
+                        this.style.backgroundColor = "black";
+                        record.push(this);
+                    }
+                });
+            }
+            cells.push(temp)
+        }
+    }
+    function createWrapper(){
+        // wrapper의 수는 셀에 의해 결정되므로 이 예제에서는
+        // wrapper를 프로그래밍적으로 생성하자
+        wrapper = document.createElement("div");
+        let ws = wrapper.style;
+        ws.width = WRAPPER_WIDTH + "px";
+        ws.height = WRAPPER_HEIGHT + "px";
+        ws.position = "relative";
+        ws.border = "1px solid black";
+        ws.margin = "auto";
+
+        document.body.appendChild(wrapper);
+        // wrapper 상에서 마우스를 누른다면
+        // 셀의 backgroundColor가 검은색으로 변할 수 있게 이벤트 주기
+        wrapper.addEventListener("mousedown", function(){
+            flag = true;
+        })
+        wrapper.addEventListener("mouseup", function(){
+            flag = false;
+        })
+    }
+
+    function createButton(){
+        // 버튼을 생성하자
+        let bt_del = document.createElement("button")
+        let bt_play = document.createElement("button");
+
+        bt_del.innerText = "지우기";
+        bt_play.innerText = "내그림 다시보기";
+        bt_del.addEventListener("click", removePaint);
+        bt_play.addEventListener("click", playHandle);
+
+        document.body.appendChild(bt_del);
+        document.body.appendChild(bt_play);
+    }
+    function removePaint(){
+        // 내가 그린 그림 지우기
+        // 모든 셀을 대상으로, 다시 색상을 원상복귀
+        for(let i =0;i<cells.length;i++){
+            for(let j = 0;j<cells[i].length;j++){
+                cells[i][j].style.backgroundColor = "yellow";
+            }
+        }
+        
+    }
+
+    function playPaint(){
+        record[delayCount].style.backgroundColor = "black";
+        delayCount++;
+        if(delayCount>=record.length)
+        {
+            delayCount = 0;
+            return 0;
+        }
+        setTimeout(playPaint, 10);
+    }
+    function playHandle(){
+        clearTimeout(timerID);
+        removePaint();
+        playPaint();
+    }
+</script>
+<body>
+    
+</body>
+</html>

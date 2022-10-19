@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #session{
+        width: 1200px;
+        height: 650px;
+        margin: auto;
+        background-color: aquamarine;
+        overflow: hidden;
+    }
+    #wrapper{
+        width: 1000px;
+        height: 100%;
+        float: left;
+    }
+    #info{
+        width: 200px;
+        height: 100%;
+        background-color: tomato;
+        float: left;
+    }
+    #control{
+        width: 100%;
+        height: 50px;
+        background-color: aliceblue;
+    }
+    #content{
+        width: 100%;
+        height: 600px;
+        background-color: bisque;
+        background-image: url("../images/roller.png");
+        background-size: 100% 100%;
+    }
+    #mario{
+        width: 50px;
+    }
+</style>
+<script>
+    const STARTX = 26;
+    const STARTY = 230;
+    const MARIO_WIDTH_HEIGHT = 50;
+    const SET_MARIO_CENTER = MARIO_WIDTH_HEIGHT/ 2;
+
+    let content;
+    let mario;
+    let posArray = [];
+    let posArrayCounter = 0;
+    let info;
+    let flag = false;
+    addEventListener("load", function(){
+        init();
+    })
+
+    function init(){
+        content = document.querySelector("#content");
+        content.style.position = "relative";
+        
+        createImg();
+        content.addEventListener("mousedown", pushMouseLocation)
+
+        info = document.querySelector("#info");
+        setInterval(move, 50);
+    }
+
+    function pushMouseLocation(event){
+        // 마우스 클릭한 점의 좌표를보관해좋나
+        // 하나의 x, y로 표현되므로 이 점을 둘다 보관할 일차원 배열을 넘겨보자
+        let pos = [event.layerX, event.layerY];
+        posArray.push(pos)
+        printlog()
+
+        // 점을 시각적으로 표현해보자
+        let dot = document.createElement("div");
+        dot.style.width = 5 + "px";
+        dot.style.height = 5 + "px";
+        dot.style.background = "red";
+
+        dot.style.position = "absolute"
+        dot.style.left = pos[0] + "px";
+        dot.style.top = pos[1] + "px";
+        content.appendChild(dot);
+
+    }
+    function printlog(){
+        // 현재까지 누적된 좌표 배열의 점보를출력해보자
+        info.innerText = "";
+        for(let i =0;i< posArray.length;i++) info.innerText = info.innerText + `x: ${posArray[i][0]}, y: ${posArray[i][1]}\n`;
+    }
+
+    function createImg(){
+        mario = document.createElement("img");
+        mario.src = "../images/mario.png";
+
+        mario.style.position = "absolute";
+        mario.style.width = MARIO_WIDTH_HEIGHT + "px";
+        mario.style.height = MARIO_WIDTH_HEIGHT + "px";
+        mario.style.left = STARTX - SET_MARIO_CENTER+ "px";
+        mario.style.top = STARTY - SET_MARIO_CENTER + "px";
+        content.appendChild(mario);
+    }
+    function move(){
+        // 사용자가 수집한 db를 이용하여 마리오를 좌표를 따라 움직이게 만들자
+        if(flag){
+            mario.style.left = posArray[posArrayCounter][0] - SET_MARIO_CENTER + "px";
+            mario.style.top = posArray[posArrayCounter][1] - SET_MARIO_CENTER + "px";
+            posArrayCounter++;
+
+            if(posArray.length<=posArrayCounter){
+                flag = false;
+                posArrayCounter=0;
+            }
+        }
+    }
+    
+    function start(){
+        flag = true;
+    }
+</script>
+<body>
+    <div id="session">
+        <div id="wrapper">
+            <div id="control">
+                <button onclick=move()>Manual</button>
+                <button onclick=start()>Auto</button>
+                <button>Pause</button>
+            </div>
+            <div id="content"></div>
+        </div>
+        <div id="info"></div>
+    </div>
+</body>
+</html>

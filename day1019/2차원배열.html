@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    let fruit = [
+        "사과",
+        "배",
+        "오렌지",
+        "포도"
+    ]
+    let car = [
+        "벤츠",
+        "아우디",
+        "bmw",
+        "K9",
+        "기아"
+    ]
+    let it=[
+        "Node.js",
+        "reactJS",
+        "spring",
+        "Android"
+    ]
+    let box = [];
+
+    // 과일 배열을 box 배열에 넣기
+    box.push(fruit)
+    box.push(car)
+    box.push(it)
+
+    // 이차원 배열에 있는 모든 요소를 출력
+    for(let i =0;i<box.length;i++){
+        for(let j = 0; j<box[i].length;j++){
+            document.write(box[i][j]);
+        }
+        document.write("<br>")
+    }
+
+    console.log("");
+    console.log("-------------------------------");
+    console.log("");
+
+    document.write("<br>")
+    document.write("<br>")
+
+    box.forEach(item=>{
+        item.forEach(item2=>{
+            document.write(item2);
+        })
+        document.write("<br>")
+    })
+
+</script>
+<body>
+    
+</body>
+</html>
