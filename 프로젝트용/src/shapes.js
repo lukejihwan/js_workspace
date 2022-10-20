@@ -2,6 +2,10 @@ import {cellMatrix, colorMatrix} from "./board.js";
 import {getRandom} from "./util.js";
 
 const SHAPE_TYPES = 7;
+
+let shapeRowLen;
+let shapeColLen;
+
 let colors = [
     "white",
     "tomato",
@@ -16,21 +20,52 @@ let colors = [
 function makeShape(){
     let shapeMatrix = [];
     let colorID= selectShapes(getRandom(SHAPE_TYPES), shapeMatrix);
-// 
+    let maxRow = 0;
+    let maxCol = 0;
+    let mappedShape = [];
 
+    // 랜덤으로 생성된 도형 정보를 컬러매트릭스에 출력
     for(let i =0;i<shapeMatrix.length;i++){
         for(let j = 0;j<shapeMatrix[i].length;j++){
             colorMatrix[i][j+shapeMatrix.length] = shapeMatrix[i][j]
         }
     }
 
+
+    function getShapeLength(){
+        for(let i =0;i<shapeMatrix.length; i++){
+            for(let j = 0;j<shapeMatrix[i].length;j++){
+                if(shapeMatrix[i][j] != 0){
+                    if(i>maxRow) maxRow = i;
+                    if(j>maxCol) maxCol = j;
+
+                }
+            }
+        }
+    }
+    getShapeLength(); //도형의 가로세로 크기 구하기
+    maxRow++;
+    maxCol++;
+
+    function mappingShape(){
+        for(let i =0;i<maxRow;i++){
+            for(let j = 0;j<maxCol;j++){
+                if(shapeMatrix[i][j] == colorID){ // shapeMatrix의 해당 셀에 실제 블럭이 포함된다면
+                    mappedShape.push({row: i, col: j});
+                }
+            }
+        }
+    }
+    mappingShape();
+
     return {
         shapeMatrix,
         currentPositionX:0,
         currentPositionY:shapeMatrix.length,
         id: colorID,
-        absoluteX: 0,
-        absoluteY: shapeMatrix.length,
+        maxRow,
+        maxCol,
+        mappedShape
     }
 }
 /* 
