@@ -1,387 +1,491 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    #wrapper{
-        width: 1100px;
-        height: 600px;
-        margin: auto;
-        background-color: yellow;
-        overflow: hidden;
-    }
-    #form-area{
-        width: 150px;
-        height: 100%;
-        background-color: pink;
-        float: left;
-        text-align: center;
-    }
-    #form-area *, #detail-area *{
-        width: 95%;
-        margin-top: 5px;
-    }
-    #content-area{
-        width: 600px;
-        height: 100%;
-        background-color: greenyellow;
-        float: left;
-    }
-    #detail-area{
-        width: 150px;
-        height: 100%;
-        float: left;
-        background-color: cornflowerblue;
-        text-align: center;
-    }
-    #slide-area{
-        width: 200px;
-        height: 100%;
-        float: left;
-        background-color: indianred;
-        text-align: center;
-    }
-    #search-area{
-        width: 100%;
-        height: 40px;
-        background-color: green;
-        text-align: center;
-    }
-    #list-area{
-        width: 100%;
-        height: 560px;
-    }
-    #mask{
-        width: 180px;
-        height: 200px;
-        background-color: beige;
-        margin: auto;
-        margin-top: 10px;
-        position: relative;
-    }
-</style>
-<script>
-    let iGlobal;
-    let topCategory;
-    let subCategory;
-    let detailPointer;
-    let box; // 전역으로 뺀 이유 = box를 한번만 만들기 위해
-    // box가 undefined일때만 생성
-    let targetX = 0;
-    let a = 0.1;
-    let before = new Array(2);
-    let mask;
-    let slideArray = [];//애니메이션에 사용될 이미지 정보를 갖는 배열
-    // 프로그램에서 사용할 데이터를 메모리에 올리되
-    // 순서와 규칙을 만들어내면, 활용할
-    // 가능성이 높아진다.
-    // 0산 1슈렉 2바다 3카드
-    let nameArray = [
-        ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg"],
-        ["shurek/img0.jpg", "shurek/img1.jpg", "shurek/img2.jpg", "shurek/img3.jpg", "shurek/img4.jpg", "shurek/img5.jpg", "shurek/img6.jpg"],
-        ["sea/abc.jfif", "sea/amgy.jfif", "sea/api.jfif", "sea/bbnj.jfif", "sea/ccv.jfif", "sea/eert.jfif", "sea/kko.jfif", "sea/mop.jfif", "sea/ney.jfif", "sea/rrt.jfif"],
-        ["h1.png", "h2.png", "h3.png", "h4.png", "h5.png", "h6.png", "h7.png", "h8.png", "h9.png", "h10.png"]
-    ];
-    let galleryArray = [];// 몇건 등록할지 알 수 없으므로, 크기를 지정하지 않았음
-    // 따라서 넣을때 push
-    let cols = ["No."," 상위" ,  "이미지", "제목", "작성자"];
-    let imgArray = []
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <style>
+        #wrapper {
+            width: 1100px;
+            height: 600px;
+            margin: auto;
+            background-color: yellow;
+            overflow: hidden;
+        }
+        #form-area {
+            width: 150px;
+            height: 100%;
+            background-color: pink;
+            float: left;
+            text-align: center;
+        }
+        #form-area *,
+        #detail-area * {
+            width: 95%;
+            margin-top: 5px;
+        }
+        #content-area {
+            width: 600px;
+            height: 100%;
+            background-color: greenyellow;
+            float: left;
+        }
+        #detail-area {
+            width: 150px;
+            height: 100%;
+            float: left;
+            background-color: cornflowerblue;
+            text-align: center;
+        }
+        #slide-area {
+            width: 200px;
+            height: 100%;
+            float: left;
+            background-color: indianred;
+            text-align: center;
+        }
+        #search-area {
+            width: 100%;
+            height: 40px;
+            background-color: green;
+            text-align: center;
+        }
+        #list-area {
+            width: 100%;
+            height: 560px;
+        }
+        #mask {
+            width: 180px;
+            height: 200px;
+            background-color: beige;
+            margin: auto;
+            margin-top: 10px;
+            position: relative;
+        }
+    </style>
+    <script>
+        let iGlobal;
+        let topCategory;
+        let subCategory;
+        let detailPointer;
+        let box; // 전역으로 뺀 이유 = box를 한번만 만들기 위해
+        // box가 undefined일때만 생성
+        let targetX = 0;
+        let a = 0.1;
+        let before = new Array(2);
+        let mask;
+        let searchCategory, searchInput, SearchBtn;
+        let slideArray = []; //애니메이션에 사용될 이미지 정보를 갖는 배열
+        // 프로그램에서 사용할 데이터를 메모리에 올리되
+        // 순서와 규칙을 만들어내면, 활용할
+        // 가능성이 높아진다.
+        // 0산 1슈렉 2바다 3카드
+        let nameArray = [
+            ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg"],
+            [
+                "shurek/img0.jpg",
+                "shurek/img1.jpg",
+                "shurek/img2.jpg",
+                "shurek/img3.jpg",
+                "shurek/img4.jpg",
+                "shurek/img5.jpg",
+                "shurek/img6.jpg",
+            ],
+            [
+                "sea/abc.jfif",
+                "sea/amgy.jfif",
+                "sea/api.jfif",
+                "sea/bbnj.jfif",
+                "sea/ccv.jfif",
+                "sea/eert.jfif",
+                "sea/kko.jfif",
+                "sea/mop.jfif",
+                "sea/ney.jfif",
+                "sea/rrt.jfif",
+            ],
+            ["h1.png", "h2.png", "h3.png", "h4.png", "h5.png", "h6.png", "h7.png", "h8.png", "h9.png", "h10.png"],
+        ];
+        let galleryArray = []; // 몇건 등록할지 알 수 없으므로, 크기를 지정하지 않았음
+        // 따라서 넣을때 push
+        let cols = ["No.", " 상위", "이미지", "제목", "작성자"];
+        let imgArray = [];
 
-    addEventListener("load",function(){
-        init()
-    })
-
-    function init(){
-        // 좌측의 상위카테고리에 이벤트 연결
-        // 이름을 부여한 요소는 1개일지라도 배열로 반환된다
-        topCategory = document.getElementsByName("top-category");
-        topCategory.forEach((element, i)=>{
-            element.addEventListener("change", function(event){
-            // 하위 카테코리 출력
-            getSubList(element, i);
-            })
-        })
-        
-        mask = document.querySelector("#mask");
-        mask.style.overflow = "hidden";
-
-        let registBtn = document.querySelector("#regist-btn");
-        registBtn.addEventListener("click", function(){
-            regist()
-            printTable()
+        addEventListener("load", function () {
+            init();
         });
 
+        function init() {
+            // 좌측의 상위카테고리에 이벤트 연결
+            // 이름을 부여한 요소는 1개일지라도 배열로 반환된다
+            topCategory = document.getElementsByName("top-category");
+            topCategory.forEach((element, i) => {
+                element.addEventListener("change", function (event) {
+                    // 하위 카테코리 출력
+                    getSubList(element, i);
+                });
+            });
 
-        let deleteBtn = document.querySelector("#delete-btn");
-        let updateBtn = document.querySelector("#update-btn");
+            mask = document.querySelector("#mask");
+            mask.style.overflow = "hidden";
 
-        deleteBtn.addEventListener("click", deleteGallery);
-        updateBtn.addEventListener("click", updateGallery);
-        
-        setInterval(changeTargetX, 2000);// 2초마다 targetX가 mask안의 box안의 img 의 width만큼 늘어남
-        // imgArray 안에 있는 img 갯수에 도달하면 0으로 초기화
-        setInterval(move, 16.666);
+            let registBtn = document.querySelector("#regist-btn");
+            registBtn.addEventListener("click", function () {
+                regist();
+                printTable();
+            });
 
-    }
+            let deleteBtn = document.querySelector("#delete-btn");
+            let updateBtn = document.querySelector("#update-btn");
 
+            deleteBtn.addEventListener("click", deleteGallery);
+            updateBtn.addEventListener("click", updateGallery);
 
-    // i:0이면 좌측, i:1이면 우측
-    function getSubList(element, i){
-        subCategory = document.getElementsByName("bottom-category")[i];
-        subCategory.innerHTML = "<option value=''>하위카테고리 선택</option>";
+            moveLoop();
 
-
-        let topIndex = parseInt(element.value);
-        let selectArray = nameArray[topIndex];
-        let b = [];
-
-        if(before[i],length!= 0){
-            for(let a =0;a<before[i].length;a++){
-                subCategory.removeChild(before[i][a]);
-            }
-            before[i].length = 0;
+            //검색을 위한 엘레멘트 전역변수에 넣기
+            searchCategory = document.querySelector("#search-category");
+            searchInput = document.querySelector("#search-input");
+            SearchBtn = document.querySelector("#search-btn");
+            SearchBtn.addEventListener("click", getSearch); //버튼이 눌리면 검색 시작
         }
-        if(isNaN(topIndex)) return 0;
 
-        // 하위카테고리에 채울 배열은
-        selectArray.forEach(item=>{
-            let op = document.createElement("option");
-            let tempName = item.split("/").at(-1)
-            tempName = tempName.split(".").at(-2);
-            op.innerText = tempName
-            op.value = item;
-            subCategory.appendChild(op);
-            b.push(op)
-        })
+        // i:0이면 좌측, i:1이면 우측
+        function getSubList(element, i) {
+            // i는 현재 사용중인 top-category(select태그)
+            subCategory = document.getElementsByName("bottom-category")[i];
+            // subCategory.innerHTML = "<option value=''>하위카테고리 선택</option>";
 
-        before[i] = b;
-        iGlobal = i
-        subCategory.addEventListener("change", sub);
-    }
-    
-    function sub(){
-        previewImg(this)
-    }
+            let topIndex = parseInt(element.value);
+            let selectArray = nameArray[topIndex];
+            let b = [];
 
-    // iGlobal이 0이면 왼쪽, 1이면 오른쪽 img를 출력
-    function previewImg(subCategory){
-        let photo = document.getElementsByName("photo")[iGlobal];
-        photo.src = "../images/" + subCategory.value;
-    }
+            //before[i]에 뭔가 들어있다면 하위카테고리의 option들을 지움
+            if (before[i] != undefined) {
+                if (before[i].length != 0) {
+                    for (let a = 0; a < before[i].length; a++) {
+                        subCategory.removeChild(before[i][a]);
+                    }
+                    before[i].length = 0;
+                }
+            }
+            if (isNaN(topIndex)) return 0;
 
-    function regist(){
-        let gallery = [
-            topCategory[0].value,
-            document.getElementsByName("bottom-category")[0].value,
-            document.getElementsByName("title")[0].value,
-            document.getElementsByName("writer")[0].value
-            
-        ]
-        if(document.getElementsByName("bottom-category")[0].value == "") return 0;
-        galleryArray.push(gallery);
+            // 하위카테고리에 채울 배열은
+            selectArray.forEach((item) => {
+                let op = document.createElement("option");
+                let tempName = item.split("/").at(-1);
+                tempName = tempName.split(".").at(-2);
+                op.innerText = tempName;
+                op.value = item;
+                subCategory.appendChild(op);
+                b.push(op);
+            });
 
-        // 갤러리 애니메이션에 사용될 이미지를 추가한다
-        // slideArray.push(gallery)
-        getSlideArray()
-        
-    }
-    function getSlideArray(){
-        slideArray.length = 0;
-        galleryArray.forEach(item=>{
-            slideArray.push(item);
-        })   
-        createSlide()
-        createThumb()
-    }
+            before[i] = b;
+            iGlobal = i;
+            // subCategory.addEventListener("change", sub);
+        }
 
-    function printTable(){
-        // 현재까지 누적된 2차원 배열인 galleryArray의 내용을 html
-        // table로 출력해주자
+        function sub(event, i) {
+            iGlobal = i;
+            previewImg(event.target);
+        }
 
-        let listArea = document.querySelector("#list-area");
+        // iGlobal이 0이면 왼쪽, 1이면 오른쪽 img를 출력
+        function previewImg(subCategory) {
+            let photo = document.getElementsByName("photo")[iGlobal];
+            photo.src = "../images/" + subCategory.value;
+        }
 
-        let tag = "<table width=\"100%\" border=\"1\">";
-        
-        tag += "<tr>";
-        cols.forEach(item=>{
-            tag += "<td>" + item + "</td>"
-        })
-        tag += "</tr>";
-        galleryArray.forEach((item, i)=>{
+        function regist() {
+            let gallery = [
+                topCategory[0].value,
+                document.getElementsByName("bottom-category")[0].value,
+                document.getElementsByName("title")[0].value,
+                document.getElementsByName("writer")[0].value,
+            ];
+            if (document.getElementsByName("bottom-category")[0].value == "") return 0;
+            galleryArray.push(gallery);
+
+            // 갤러리 애니메이션에 사용될 이미지를 추가한다
+            // slideArray.push(gallery)
+            getSlideArray();
+        }
+        function getSlideArray() {
+            slideArray.length = 0;
+            galleryArray.forEach((item) => {
+                slideArray.push(item);
+            });
+            createSlide();
+            createThumb();
+        }
+
+        function printTable() {
+            // 현재까지 누적된 2차원 배열인 galleryArray의 내용을 html
+            // table로 출력해주자
+
+            let listArea = document.querySelector("#list-area");
+
+            let tag = '<table width="100%" border="1">';
+
             tag += "<tr>";
-            tag += "<td>" + parseInt(i+1) + "</td>"    
-            item.forEach((item2, j)=>{
-                if(j==0){
-                    tag += "<td>" + topCategory[iGlobal][parseInt(item2)+1].text + "</td>";
-                }else if(j==1){
-                    tag += `<td><img src ="../images/${item2}" width="45px"></img></td>`;
-                }else if(j==2){
-                    tag += "<td><a href=\"javascript:getDetail("+i+")\">" + item2 + "</a></td>"
-                }
-                else{
-                    tag += "<td>" + item2 + "</td>"
-                }
-            })
+            cols.forEach((item) => {
+                tag += "<td>" + item + "</td>";
+            });
             tag += "</tr>";
-        })            
-        
-        tag += "</table>"
-        listArea.innerHTML = tag;
-    }
+            galleryArray.forEach((item, i) => {
+                tag += "<tr>";
+                tag += "<td>" + parseInt(i + 1) + "</td>";
+                item.forEach((item2, j) => {
+                    if (j == 0) {
+                        tag += "<td>" + topCategory[iGlobal][parseInt(item2) + 1].text + "</td>";
+                    } else if (j == 1) {
+                        tag += `<td><img src ="../images/${item2}" width="45px"></img></td>`;
+                    } else if (j == 2) {
+                        tag += '<td><a href="javascript:getDetail(' + i + ')">' + item2 + "</a></td>";
+                    } else {
+                        tag += "<td>" + item2 + "</td>";
+                    }
+                });
+                tag += "</tr>";
+            });
 
-    function getDetail(n){
-        // 전체 2차원 배열중 선택한 링크에 소속된 배열을 추출
-        iGlobal = 1;
-        let topCat = topCategory[iGlobal];
-        topCat.value = galleryArray[n][0]
-        let sub = document.getElementsByName("bottom-category")[iGlobal];
-        getSubList(topCat, iGlobal);
-
-        sub.value = galleryArray[n][1];
-        previewImg(sub);
-        let title = document.getElementsByName("title")[iGlobal];
-        let writer = document.getElementsByName("writer")[iGlobal];
-        title.value = galleryArray[n][2]
-        writer.value = galleryArray[n][3]
-        // 이 배열 정보를 이용하여 우측 detail-area에 정보주기
-
-        detailPointer = n;
-    }
-
-    function deleteGallery(){
-        if(detailPointer == undefined) return 0;
-        let title = galleryArray[detailPointer][2];
-        if(confirm("제목: "+title+"을(를) 삭제하시겠습니까?")){
-            // 이차원 배열에서 지금 보고있는 레코드에 해당하는 배열을
-            // 삭제하고 printTable로 화면 갱신
-            galleryArray.splice(detailPointer, 1);
-            printTable();
-            detailPointer = null;
+            tag += "</table>";
+            listArea.innerHTML = tag;
         }
-        getSlideArray();
-    }
 
-    // 게시물 수정
-    function updateGallery(){
-        // 이차원 배열요소중 현재 보고있는 층에 해당하는 일차원 배열을
-        // 끄집어내어, 수정해버리자! 그리고 화면갱신을 위해 printTable()
-        if(detailPointer == undefined) return 0;
-        let title = galleryArray[detailPointer][2];
-        if(confirm("제목: "+title+"을(를) 수정하시겠습니까?")){
-            galleryArray[detailPointer][0] = topCategory[1].value;
-            galleryArray[detailPointer][1] = document.getElementsByName("bottom-category")[1].value;
-            galleryArray[detailPointer][2] = document.getElementsByName("title")[1].value;
-            galleryArray[detailPointer][3] = document.getElementsByName("writer")[1].value;
-            printTable();
-            detailPointer = null;
+        function getDetail(n) {
+            // 전체 2차원 배열중 선택한 링크에 소속된 배열을 추출
+            iGlobal = 1;
+            let topCat = topCategory[iGlobal];
+            topCat.value = galleryArray[n][0];
+            let sub = document.getElementsByName("bottom-category")[iGlobal];
+            getSubList(topCat, iGlobal);
+
+            sub.value = galleryArray[n][1];
+            previewImg(sub);
+            let title = document.getElementsByName("title")[iGlobal];
+            let writer = document.getElementsByName("writer")[iGlobal];
+            title.value = galleryArray[n][2];
+            writer.value = galleryArray[n][3];
+            // 이 배열 정보를 이용하여 우측 detail-area에 정보주기
+
+            detailPointer = n;
         }
-        getSlideArray();
-    }
 
-    // 보여질 갤러리 사진들을 생성하여 div에 동적으로 추가하자
-    // 그리고 이 div의 용도는 이미지들을 안고, 통째로 움직일 div
-    function createSlide(){
-        if(box == undefined){
-            box = document.createElement("div");
-            box.style.width = slideArray.length * 180 + "px";
-            box.style.height = 200 + "px";
-            box.style.background = "red";
-            box.style.position = "absolute";
-            box.style.left = 0 + "px";
-            //마스크에 부착
-            mask.appendChild(box);
-        }
-    }
-
-    function createThumb(){
-        if(slideArray.length != 0){
-            for(let i = 0;i< slideArray.length-1;i++){
-                box.removeChild(imgArray[i])
+        function deleteGallery() {
+            if (detailPointer == undefined) return 0;
+            let title = galleryArray[detailPointer][2];
+            if (confirm("제목: " + title + "을(를) 삭제하시겠습니까?")) {
+                // 이차원 배열에서 지금 보고있는 레코드에 해당하는 배열을
+                // 삭제하고 printTable로 화면 갱신
+                galleryArray.splice(detailPointer, 1);
+                printTable();
+                detailPointer = null;
             }
-            imgArray.length = 0;
+            getSlideArray();
         }
 
-        for(let i = 0;i< slideArray.length;i++){
-            let img = document.createElement("img");
-            img.src = "../images/" + slideArray[i][1];
-            img.style.width = 180 + "px";
-            img.style.height = 200 + "px";
-            img.style.position = "absolute";
-            img.style.left = i * 180 + "px";
-            box.appendChild(img);
-            imgArray.push(img)
+        // 게시물 수정
+        function updateGallery() {
+            // 이차원 배열요소중 현재 보고있는 층에 해당하는 일차원 배열을
+            // 끄집어내어, 수정해버리자! 그리고 화면갱신을 위해 printTable()
+            if (detailPointer == undefined) return 0;
+
+            let title = galleryArray[detailPointer][2];
+            if (confirm("제목: " + title + "을(를) 수정하시겠습니까?")) {
+                galleryArray[detailPointer][0] = topCategory[1].value;
+                galleryArray[detailPointer][1] = document.getElementsByName("bottom-category")[1].value;
+                galleryArray[detailPointer][2] = document.getElementsByName("title")[1].value;
+                galleryArray[detailPointer][3] = document.getElementsByName("writer")[1].value;
+                printTable();
+                detailPointer = null;
             }
-    }
-
-    function move(){
-        if(box!=undefined){
-            box.style.left = parseFloat(box.style.left) + a * (targetX - parseFloat(box.style.left)) + "px";
+            getSlideArray();
         }
-        
-    }
-    function changeTargetX(){
-        targetX = targetX + -180;
 
-        if(targetX<= -180 * imgArray.length+1) targetX = 0;
-        console.log(targetX);
-    }
-</script>
-<body>
-    <!-- 150, 600 ,150, 200 = 1100 -->
-    <div id="wrapper">
-        <div id="form-area">
-            <select name="top-category">
-                <option value="">상위카테고리 선택</option>
-                <option value="0">산</option>
-                <option value="1">슈렉</option>
-                <option value="2">바다</option>
-                <option value="3">카드</option>
-            </select>
-            <select name="bottom-category">
-                <option value="">하위카테고리 선택</option>
-            </select>
-            <img src="../images/default.png" alt="" name="photo">
-            <input type="text" name="title" id="" placeholder="제목">
-            <input type="text" name="writer" id="" placeholder="작성자">
-            <button id="regist-btn">등록</button>
-        </div>
-        <div id="content-area">
-            <div id="search-area">
-                <select name="" id="keyword">
-                    <option value="">검색유형</option>
-                    <option value="">이미지명</option>
-                    <option value="">제목</option>
-                    <option value="">작성자</option>
+        // 보여질 갤러리 사진들을 생성하여 div에 동적으로 추가하자
+        // 그리고 이 div의 용도는 이미지들을 안고, 통째로 움직일 div
+        function createSlide() {
+            if (box == undefined) {
+                box = document.createElement("div");
+                box.style.width = slideArray.length * 180 + "px";
+                box.style.height = 200 + "px";
+                box.style.background = "red";
+                box.style.position = "absolute";
+                box.style.left = 0 + "px";
+                //마스크에 부착
+                mask.appendChild(box);
+            }
+        }
+
+        function createThumb() {
+            if (slideArray.length != 0) {
+                for (let i = 0; i < slideArray.length - 1; i++) {
+                    box.removeChild(imgArray[i]);
+                }
+                imgArray.length = 0;
+            }
+
+            for (let i = 0; i < slideArray.length; i++) {
+                let img = document.createElement("img");
+                img.src = "../images/" + slideArray[i][1];
+                img.style.width = 180 + "px";
+                img.style.height = 200 + "px";
+                img.style.position = "absolute";
+                img.style.left = i * 180 + "px";
+                box.appendChild(img);
+                imgArray.push(img);
+            }
+        }
+
+        function move() {
+            if (box != undefined) {
+                box.style.left = parseFloat(box.style.left) + a * (targetX - parseFloat(box.style.left)) + "px";
+            }
+        }
+        function changeTargetX() {
+            targetX = targetX + -180;
+
+            if (targetX <= -180 * imgArray.length + 1) targetX = 0;
+            // console.log(targetX);
+        }
+        function moveLoop() {
+            setInterval(changeTargetX, 2000); // 2초마다 targetX가 mask안의 box안의 img 의 width만큼 늘어남
+            // imgArray 안에 있는 img 갯수에 도달하면 0으로 초기화
+            setInterval(move, 16.666);
+            let subCategory = document.getElementsByName("bottom-category");
+            subCategory.forEach((item, i) => {
+                item.addEventListener("change", function (event) {
+                    sub(event, i);
+                });
+            });
+        }
+
+        function getSearch() {
+            let searchedGalleryArray = []; //검색한 갤러리 레코드를 여기에 저장
+            let leftOverArray = [];
+            let inputBufferToConvert;
+            console.log(searchCategory.value);
+            console.log(searchInput.value);
+            console.log(SearchBtn);
+
+            if (searchCategory.value == "0") {
+                // 만약 검색을 상위카테고리로 한다면 상위카테고리의 문자열을 상위카테고리의 option들의
+                // value들을 검색할 수 있게 숫자로 변환시켜줌
+                switch (searchInput.value) {
+                    case "산":
+                        inputBufferToConvert = "0";
+                        break;
+                    case "슈렉":
+                        inputBufferToConvert = "1";
+                        break;
+                    case "바다":
+                        inputBufferToConvert = "2";
+                        break;
+                    case "카드":
+                        inputBufferToConvert = "3";
+                        break;
+                }
+            } else {
+                //상위 카테고리가 아니라면 바로 검색할 수 있게 임시보관함(inputBufferToConver)에 넣어줌
+                inputBufferToConvert = searchInput.value;
+            }
+            // galleryArray에서 검색 조건에 해당하는 레코드가 있다면 searchedGalleryArray에 push
+            for (let i = 0; i < galleryArray.length; i++) {
+                if (galleryArray[i][parseInt(searchCategory.value)] == inputBufferToConvert) {
+                    searchedGalleryArray.push(galleryArray[i]);
+                } else {
+                    leftOverArray.push(galleryArray[i]);
+                }
+            }
+
+            galleryArray.length = 0; //galleryArray안의 배열들을 searched와 leftover로 분리 후 초기화
+            setSearch(searchedGalleryArray, leftOverArray);
+        }
+
+        // 검색한 배열을 galleryArray에 넣음으로 검색한 결과를 출력
+        function setSearch(searchedGalleryArray, leftOverArray) {
+            //galleryArray가 참조중인 빈배열([])을 searchedGalleryArray와 동일한 참조로 대체
+            galleryArray = searchedGalleryArray;
+            printTable();
+
+            if (document.querySelector("#back-btn") == undefined) {
+                //돌아가기 버튼 만들기
+                let backBtn = document.createElement("button");
+                backBtn.innerText = "돌아가기";
+                backBtn.id = "back-btn";
+                let searchArea = document.querySelector("#search-area");
+                searchArea.appendChild(backBtn);
+
+                backBtn.addEventListener("click", function () {
+                    for (let i = 0; i < leftOverArray.length; i++) {
+                        galleryArray.push(leftOverArray[i]);
+                    }
+                    printTable(); //테이블 다시그리기
+                    getSlideArray(); //슬라이드 변경된 값으로 다시그림
+                    console.log("돌아갔음");
+                    searchArea.removeChild(backBtn);
+                });
+            } else {
+                alert("돌아간다음 다시 검색하세요");
+            }
+        }
+    </script>
+    <body>
+        <!-- 150, 600 ,150, 200 = 1100 -->
+        <div id="wrapper">
+            <div id="form-area">
+                <select name="top-category">
+                    <option value="">상위카테고리 선택</option>
+                    <option value="0">산</option>
+                    <option value="1">슈렉</option>
+                    <option value="2">바다</option>
+                    <option value="3">카드</option>
                 </select>
-                <input type="text" name="" id="" placeholder="검색어 입력" size="35">
-                <button>검색</button>
+                <select name="bottom-category">
+                    <option value="">하위카테고리 선택</option>
+                </select>
+                <img src="../images/default.png" alt="" name="photo" />
+                <input type="text" name="title" id="" placeholder="제목" />
+                <input type="text" name="writer" id="" placeholder="작성자" />
+                <button id="regist-btn">등록</button>
             </div>
-            <div id="list-area"></div>
+            <div id="content-area">
+                <div id="search-area">
+                    <select name="" id="search-category">
+                        <option value="">검색유형</option>
+                        <option value="0">카테고리명</option>
+                        <option value="2">제목</option>
+                        <option value="3">작성자</option>
+                    </select>
+                    <input type="text" name="" id="search-input" placeholder="검색어 입력" size="35" />
+                    <button id="search-btn">검색</button>
+                </div>
+                <div id="list-area"></div>
+            </div>
+            <div id="detail-area">
+                <select name="top-category">
+                    <option value="">상위카테고리 선택</option>
+                    <option value="0">산</option>
+                    <option value="1">슈렉</option>
+                    <option value="2">바다</option>
+                    <option value="3">카드</option>
+                </select>
+                <select name="bottom-category">
+                    <option value="">하위카테고리 선택</option>
+                </select>
+                <img src="../images/default.png" alt="" name="photo" />
+                <input type="text" name="title" id="" placeholder="제목" />
+                <input type="text" name="writer" id="" placeholder="작성자" />
+                <button id="update-btn">수정</button>
+                <button id="delete-btn">삭제</button>
+            </div>
+            <div id="slide-area">
+                <div id="mask"></div>
+            </div>
         </div>
-        <div id="detail-area">
-            <select name="top-category">
-                <option value="">상위카테고리 선택</option>
-                <option value="0">산</option>
-                <option value="1">슈렉</option>
-                <option value="2">바다</option>
-                <option value="3">카드</option>
-            </select>
-            <select name="bottom-category">
-                <option value="">하위카테고리 선택</option>
-            </select>
-            <img src="../images/default.png" alt="" name="photo">
-            <input type="text" name="title" id="" placeholder="제목">
-            <input type="text" name="writer" id="" placeholder="작성자">
-            <button id="update-btn">수정</button>
-            <button id="delete-btn">삭제</button>
-        </div>
-        <div id="slide-area">
-            <div id="mask"></div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
