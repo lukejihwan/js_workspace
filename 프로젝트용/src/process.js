@@ -5,13 +5,18 @@ import {makeShape, colors} from "./shapes.js";
 let isShapeOut = false; // 사용자가 조작할 도형이 존재 하는지
 let shapeData; //현재 사용자가 조작중인 도형
 function processing(){
-     shapeData = makeShape()
-    console.log(shapeData)
-    console.log(colorMatrix)
-    console.log(cellMatrix)
     if(!isShapeOut){
-        draw();
+        shapeData = makeShape()
+        draw()
+        isShapeOut = true;
+    }else{
+        isGameOVer()
+        detectingBottom()
     }
+    // console.log(shapeData)
+    // console.log(colorMatrix)
+    // console.log(cellMatrix)
+
 }
 
 function draw(){
@@ -22,59 +27,88 @@ function draw(){
         }
     }   
 }
-
-
-function detectingBottom(){
-    // 아래쪽으로 도형을 내리기 위해 먼저 충돌 감지를 해야함
-    // let currentNextPositionRow = shapeData.maxRow-1 + shapeData.currentPositionX;
-    let lowestmap = []
-    for(let j = 0; j<shapeData.maxCol;j++){
-        let currentMaxRow = 0;
-        let currentMaxCol = 0;
-        for(let i = 0;i<shapeData.maxRow;i++){
-            // console.log(shapeData.shapeMatrix[i][tempCol])
-            shapeData.mappedShape.forEach(item => {
-                if(i == item.row && j == item.col){
-                    if(currentMaxRow<i){
-                        currentMaxRow = i;
-                        currentMaxCol = j;
-                        console.log(i, j);
-                    }
-                }
-            });
-            
+function isGameOVer(){
+    let mappedShape = shapeData.mappedShape;
+    let currentPosX = shapeData.currentPositionX;
+    let currentPosY = shapeData.currentPositionY;
+    for(let i = 0;i<shapeData.mappedShape.leftBottomSpace;i++){
+        if(colorMatrix[mappedShape[i].row+currentPosX][mappedShape[i].col+currentPosY] !=0){
+            console.log("게임오버")
         }
-        lowestmap.push([currentMaxRow, currentMaxCol])
     }
-    console.log(lowestmap)
 }
-
-function downShape(){
-    detectingBottom()
-    for(let i =0;i<shapeData.shapeMatrix.length;i++){
-        for(let j = 0;j<shapeData.shapeMatrix[i].length;j++){
-            if(colorMatrix[i+shapeData.currentPositionX][j+shapeData.currentPositionY] !==0){
-                colorMatrix[i+shapeData.currentPositionX][j+shapeData.currentPositionY] = 0;
+function getLowestCell(){
+    // 아래쪽으로 도형을 내리기 위해 먼저 충돌 감지를 해야함
+        let lowestmap = []
+        for(let j = 0; j<shapeData.maxCol;j++){
+            let currentMaxRow = 0;
+            let currentMaxCol = 0;
+            for(let i = 0;i<shapeData.maxRow;i++){
+                // console.log(shapeData.shapeMatrix[i][tempCol])
+                shapeData.mappedShape.forEach(item => {
+                    // console.log(i, j, "inforEach", item);
+                    if(i == item.row && j == item.col){
+                        if(currentMaxRow<=i){
+                            currentMaxRow = i;
+                            currentMaxCol = j;
+                            // console.log("cr", i , "cc",j);
+                        }
+                        // console.log("currentMaxRow", currentMaxRow, "currentMaxCol", currentMaxCol)
+    
+                    }
+                });
+                
+            }
+            // console.log(lowestmap, "push")
+            lowestmap.push([currentMaxRow+1, currentMaxCol])
+        }
+        return lowestmap;
+    }
+function detectingBottom(){
+    let lowCell = getLowestCell();
+    // for(let i = 0;i<lowCell.length;i++){
+    //     console.log(lowCell[i][0]+shapeData.currentPositionX, lowCell[i][1]+shapeData.currentPositionY)
+    //     if(colorMatrix[lowCell[i][0]+shapeData.currentPositionX][lowCell[i][1]+shapeData.currentPositionY]!==0){
+    //         console.log(shapeData)
+    //     }else{
+    //         downShape()
+    //         return 0;
+    //     }
+    // }
+    let leftBottomSpace = colorMatrix.length - shapeData.currentPositionX - shapeData.maxRow;
+    console.log(leftBottomSpace)
+    if(leftBottomSpace>=1){
+        for(let i =0;i<lowCell.length;i++){
+            // console.log(lowCell[i][0] + shapeData.currentPositionX, lowCell[i][1] + shapeData.currentPositionY)
+            
+            if(colorMatrix[lowCell[i][0] + shapeData.currentPositionX][lowCell[i][1] + shapeData.currentPositionY]){
+                console.log("충돌");
+                isShapeOut = false;
+                return 0;
             }
         }
+        
+    }else{
+        console.log("바닥에 닿음")
+        isShapeOut = false;
+        return 0;
     }
-
-    
-    shapeData.currentPositionX++;
-    
-
-
-    for(let i =0;i<shapeData.shapeMatrix.length;i++){
-        for(let j = 0;j<shapeData.shapeMatrix[i].length;j++){
-            colorMatrix[i+shapeData.currentPositionX][j+shapeData.currentPositionY] =
-            shapeData.shapeMatrix[i][j];
-            shapeData.absoluteX = i+shapeData.currentPositionX
-            shapeData.absoluteY = i+shapeData.currentPositionY
-        }
-    }
-    draw()
-    console.log(shapeData);
+    downShape();
 }
 
 
-export {processing, downShape, detectingBottom};
+function downShape(){
+
+    for(let i =0;i<shapeData.mappedShape.length;i++){
+        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = 0;
+    }
+    shapeData.currentPositionX++;
+    for(let i = 0;i<shapeData.mappedShape.length;i++){
+        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = shapeData.id;
+    }
+
+    draw()
+}
+
+
+export {processing, downShape, detectingBottom, getLowestCell};
