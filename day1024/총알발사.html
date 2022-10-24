@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #gun{
+        position: absolute;
+        top: 150px;
+        left: 0px;
+    }
+</style>
+<script>
+    // 클래스의 목적은 코드의 재사용에 있음
+    // 따라서 총알이 다수  필요하다면 클래스로 정의해놓고 해당 클래스의
+    // 인스턴스를 다수 생성하자
+    class Bullet{
+        /**
+         * @param x 초기 left 위치
+         * @param velX 한 사이클당 총알이 움직이는 거리
+        */
+        constructor(x = 150, velX){
+            this.x = x; //현재 총알의 좌표를 표현하는 속성
+            this.velX = velX;
+
+
+            // js에서는 생성자에 멤버변수를 생성한다
+            this.img =  document.createElement("img");
+            let imgStyle = this.img.style;
+            this.img.src = "../images/bullet.png";
+            imgStyle.width = 25 + "px";
+            imgStyle.height = 20 + "px";
+            imgStyle.position = "absolute";
+            imgStyle.left = this.x + "px";
+            imgStyle.top = 150 + "px";
+
+            document.body.appendChild(this.img);
+
+            this.move();
+        }
+
+        move(){
+            this.x += this.velX;
+            this.img.style.left = this.x + "px";
+
+            if(parseInt(this.img.style.left) >= 500){
+                clearTimeout(this.id)
+                document.body.removeChild(this.img);
+                delete this;
+                return 0;
+            }
+
+            this.id = setTimeout(()=>{
+                this.move();
+            }, 10)
+        }
+    }
+
+    addEventListener("load", init);
+    function init(){
+    document.querySelector("#fire-btn").addEventListener("click", function(){
+        fire();
+    })
+    }
+    function fire(){
+        // 거푸집인 클래스로부터 인스턴스를 생성하자
+        new Bullet(150, 2);
+    }
+</script>
+<body>
+    <button id="fire-btn">총알발사</button>
+    <img src="../images/gun.png" alt="" width="150px" id="gun">
+</body>
+</html>

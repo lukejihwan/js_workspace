@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>화살날리기</title>
+</head>
+<script>
+    // let x = 0; // 좌표
+    // let xs = new Array(3).fill(x)
+    // let velX = 2; //몇 걸음씩(픽셀) 갈지 결정 즉 속도결정
+    // let velXs = []
+    // let spans = []
+
+
+
+    
+    
+    // // 화살을 생성하는 함수
+    // function createArrow(i){
+    //     //함수는 소속관계가 없으므로, this가 사실 비어있다.
+    //     // 이때 함수안에서 굳이 this를 명시하면 상위 영역인 window를 참조하게 된다
+    //     // console.log(this)
+    //     let span = document.createElement("span")
+    //     span.innerText = "→";
+    //     span.style.fontSize = 25 + "px";
+    //     span.style.color = `rgb(${getRandom(256)}, ${getRandom(256)}, ${getRandom(256)})`
+    //     span.style.position = "absolute";
+    //     span.style.left = x + "px";
+    //     span.style.top = 100 * i + "px";
+    //     document.body.appendChild(span);
+    //     spans.push(span)
+    // }
+    // function move(i){
+    //     xs[i] += velXs[i];
+    //     spans[i].style.left = xs[i] + "px";
+    //     setTimeout("move("+i+")", 200);
+    // }
+    // function init(){
+    //     document.body.style.position = "relative";
+    //     for(let i = 0;i<3;i++){
+    //         velXs.push(velX * i + 2);
+    //         createArrow(i);
+    //         move(i)
+    //     }
+    // }
+
+
+    //클래스 안에 명시된 함수는 메서드라 불러야 한다
+    // 이 사물의 동작 방식을 결정짓는다
+   class arrow{
+    // 누군가가 이 클래스로부터 화살을 생성할 때, y값을 결정짓자
+        constructor(color ,y, velX=2, fontSize = 25){
+            this.x = 0;
+            this.span;
+            this.velX = velX;
+            this.y = y; // 클래스 매개변수인 y를 현재 클래스의 객체의 지역변수y에 
+            // 넣어준다.
+            // 생명주기는 이 객체가 사라지기 전까지 존재한다.
+            this.color = color;
+            this.fontSize = fontSize;
+            this.createArrow();
+            this.move();
+        };
+
+        createArrow(){
+            this.span = document.createElement("this.span")
+            this.span.innerText = "→";
+            this.span.style.fontSize = this.fontSize + "px";
+            this.span.style.color = this.color;
+            this.span.style.position = "absolute";
+            this.span.style.left = this.x + "px";
+            this.span.style.top = this.y + "px";
+            document.body.appendChild(this.span);
+            }
+        move(){
+            this.x += this.velX;
+            this.span.style.left = this.x + "px";
+
+            // 2015년 ECMAScript 에서는 아래의 문제를 해결하기 위해
+            //  화살표 함수를 지원
+            // 화살표 함수는 자신의 영역 바깥 영역에 접근이 가능하기 때문에, 화살표
+            // 함수 내에서의 this는 이 메서느 영역의 바깥쪽은 class의 객체를 가리키게
+            // 된다.
+            setTimeout(()=>{
+                this.move();
+            }, 200);
+        }
+    }
+
+    function init(){
+        new arrow("red", 15, 6);
+        new arrow("orange", 35, 4, 50);
+    }
+    addEventListener("load", function(){
+        init()
+    })
+
+    
+</script>
+<body>
+    
+</body>
+</html>

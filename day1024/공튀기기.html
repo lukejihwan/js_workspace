@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공튀기기</title>
+</head>
+<style>
+    body{
+        margin: 0px;
+    }
+</style>
+<script src="../lib/util.js"></script>
+<script src="./Ball.js">
+</script>
+<script>
+    const WRAPPER_LENGTH = 700;
+
+    let  wrapper;
+    let ball;
+    let colorArray = [
+        "red", "orange", "yellow", "green", "blue", "navy", "purple"
+    ];
+
+    addEventListener("load", function(){
+        init()
+        // 키보드 이벤트 연결하기
+        document.body.addEventListener("keydown", function(){
+            if(event.keyCode == 32){ //spacebar를 누르면
+                createBall()    
+            }else if(event.keyCode == 27){
+                ball.flag = !ball.flag;
+                ball.move();
+            }
+        })
+    })
+    function init(){
+        createWall();
+        createBall();
+
+    }
+    function createWall(){
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.width =  WRAPPER_LENGTH + "px";
+        wrapper.style.height =  WRAPPER_LENGTH + "px";
+        wrapper.style.margin = "auto";
+        wrapper.style.border = "2px solid red";
+        wrapper.style.position = "relative";
+        wrapper.style.overflow = "hidden";
+
+        document.body.appendChild(wrapper);
+    }
+    function createBall(){
+        ball = new Ball(getRandomWithRange(10, 31), getRandomWithRange(10, 31), colorArray[getRandom(colorArray.length)], getRandomWithRange(10, 101), getRandomWithRange(10, 101), getRandomWithRange(2, 11), getRandomWithRange(2, 11));
+        
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>
