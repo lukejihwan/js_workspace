@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충돌체크 테스트</title>
+</head>
+<style>
+    body{
+        margin: 0px;
+    }
+    #wrapper{
+        width: 100%;
+        height: 650px;
+        background-color: indianred;
+        position: relative;
+    }
+</style>
+<script src="./Rect.js"></script>
+<script src="../lib/util.js"></script>
+<script>
+    let box1;
+    let box2;
+    addEventListener("load", function(){
+        init()
+    })
+
+    function init(){
+        document.body,addEventListener("mousemove", function(event){
+            // console.log(event.offsetX, event.offsetY)
+            drag(event)
+        })
+
+
+        let wrapper = document.querySelector("#wrapper");
+
+        // 사각형을 2개 생성하자
+        box1 = new Rect("yellow", 50, 50, wrapper, 100, 100);
+        box2 = new Rect("greenYellow", 100, 200, wrapper, 100, 100);
+    }
+
+    function drag(event){
+        box1.x =  event.clientX-50
+        box1.y =  event.clientY-50;
+        box1.render()
+        
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

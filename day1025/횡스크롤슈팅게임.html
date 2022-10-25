@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        margin: 0;
+    }
+    #stage{
+        width: 100%;
+        height: 640px;
+        background-image: url(../images/bg_game.png);
+    }
+</style>
+<script src="./plane.js"></script>
+<script src="./Bullet.js"></script>
+<script src="./Enemy.js"></script>
+<script>
+    let stage;
+    let bgX = 0;
+    let plane;
+    let bulletArray = []
+    let enemyNameArray = ["e1.png","e2.png", "e3.png", "e4.png", "e5.png"];
+    let enemyArray = []
+    addEventListener("load",function(){
+        init()
+    })
+    function init(){
+        stage = document.querySelector("#stage");
+        createHero(); //주인공 등장
+        createEnemy() //적군 등장
+        //주인공을 키보드로 제어하도록 body 이벤트 연결하기
+        document.body.addEventListener("keydown", function(event){
+            //37 left 38 up 39 right 40 down space 32
+            switch(event.keyCode){
+                case 37:
+                    console.log("left")
+                    moveX(-5)
+                    break;
+                case 38:
+                    console.log("up")
+                    moveY(-5)
+
+                    break;
+                case 39:
+                    console.log("right")
+                    moveX(5)
+                    break;
+                case 40:
+                    console.log("down")
+                    moveY(5)
+                    break;
+                case 32:
+                    fire();
+                    break;
+            }  
+        });
+        document.body.addEventListener("keyup", function(event){
+            //37 left 38 up 39 right 40 down space 32
+            switch(event.keyCode){
+                case 37:
+                    console.log("left")
+                    moveX(0)
+                    break;
+                case 38:
+                    console.log("up")
+                    moveY(0)
+
+                    break;
+                case 39:
+                    console.log("right")
+                    moveX(0)
+                    break;
+                case 40:
+                    console.log("down")
+                    moveY(0)
+                    break;
+            }  
+        });
+        gameLoop()
+    }
+    
+    // 루프를 생성
+    function gameLoop(){
+        bgEffect();
+        plane.tick(); //물리량 변화
+        plane.render(); //화면에 그리기
+
+        // let len = bulletArray.length;
+
+        for(let i =0;i<bulletArray.length;i++){
+            bulletArray[i].tick()
+            bulletArray[i].render()
+            //스크린 밖으로 나가면 총알제거
+            /* 주의) 배열을 제거하려면 제거하기 전에 사용할거 다 사용한 다음 제거하자 */
+            if(bulletArray[i].x >screen.width-200){
+                // 화면에서 제거
+                stage.removeChild(bulletArray[i].img);
+
+                // 배열에서 제거
+                bulletArray.splice(i, 1);
+            }
+
+            
+        }
+        
+        for(let i =0;i<enemyArray.length;i++){
+            enemyArray[i].tick()
+            enemyArray[i].render()
+        }
+        requestAnimationFrame(gameLoop)
+    }
+    // 배경을 제어
+    function bgEffect(){
+        bgX -= 1;
+        stage.style.backgroundPosition = bgX + "px 0px";
+    }
+    // 주인공 생성하기
+    function createHero(){
+    // constructor(container, x, y, width, height){
+        plane = new Plane(stage, 100, 100, 100, 100, 0, 0);
+    }
+    // 적군 생성하기
+    function createEnemy(){
+       enemyArray.push(new Enemy(stage, screen.width-200, 100, 75, 70, -3, 0, "../images/game/" + enemyNameArray[0]));
+       enemyArray.push(new Enemy(stage, screen.width-100, 200, 75, 70, -2, 0, "../images/game/" + enemyNameArray[1]));
+       enemyArray.push(new Enemy(stage, screen.width-0, 300, 75, 70, -4, 0, "../images/game/" + enemyNameArray[2]));
+       enemyArray.push(new Enemy(stage, screen.width-300, 400, 75, 70, -2, 0, "../images/game/" + enemyNameArray[3]));
+       enemyArray.push(new Enemy(stage, screen.width-500, 500, 75, 70, -1, 0, "../images/game/" + enemyNameArray[4]));
+    }
+    function moveX(velX){
+        plane.velX = velX;
+    }
+    function moveY(velY){
+        plane.velY = velY;
+
+    }
+    function fire(){
+        bulletArray.push(new Bullet(stage, plane.x + plane.width, plane.y + plane.height/2, 20, 20, 10, 0, "../images/bullet.png"));
+    }
+</script>
+<body>
+    <div id="stage"></div>
+</body>
+</html>
