@@ -16,8 +16,9 @@ function processing(id){
         }
     }else{
         detectingBottom()
+        getLeftestCell()
     }
-    // console.log(shapeData)
+    console.log(shapeData)
     // console.log(colorMatrix)
     // console.log(cellMatrix)
 
@@ -104,9 +105,38 @@ function downShape(){
     draw()
 }
 
-// function getLeftestCell(){
+function getLeftestCell(){
+    //현재 도형에서 가장 왼쪽에  있는 셀들의 배열을 구하자
+    let breakCheck = false
+    // for(let i =0;i<shapeData.maxRow;i++){
+    //     for(let j = 0; j<shapeData.maxCol;j++){
+    //         shapeData.mappedShape.forEach(item=>{
+    //             if(colorMatrix[])
+    //         })
+    //     }
+    //     if(breakCheck) break;
+    // }
+    let i =0;
+    let leftestMap = [];
+    let cRow = 0;
 
-// }
+    // while(true){
+    //     let j = 0;
+    //     while(true){
+    //         for(let k =0;k<shapeData.mappedShape.length;k++){
+    //             if()
+    //         }
+
+    //         j++
+    //     }
+    // }
+    for(let i =0;i<shapeData.mappedShape.length;i++){
+        if(cRow < shapeData.mappedShape[i].row) cRow = shapeData.mappedShape[i].row;
+        for(let j = 0;j<shapeData.mappedShape.length;j++){
+            
+        }
+    }
+}
 
 
 export {processing, downShape, detectingBottom, getLowestCell, shapeData};
