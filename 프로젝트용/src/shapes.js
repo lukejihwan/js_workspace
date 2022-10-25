@@ -23,13 +23,18 @@ function makeShape(){
     let maxRow = 0;
     let maxCol = 0;
     let mappedShape = [];
+    let isGameOver = false;
 
     // 랜덤으로 생성된 도형 정보를 컬러매트릭스에 출력
-    for(let i =0;i<shapeMatrix.length;i++){
-        for(let j = 0;j<shapeMatrix[i].length;j++){
-            colorMatrix[i][j+shapeMatrix.length] = shapeMatrix[i][j]
-        }
-    }
+    // for(let i =0;i<shapeMatrix.length;i++){
+    //     for(let j = 0;j<shapeMatrix[i].length;j++){
+    //         colorMatrix[i][j+shapeMatrix.length] = shapeMatrix[i][j]
+    //     }
+    // }
+
+    
+
+    console.log(shapeMatrix);
 
 
     function getShapeLength(){
@@ -58,6 +63,16 @@ function makeShape(){
     }
     mappingShape();
 
+    for(let i =0;i<mappedShape.length;i++){
+        if(colorMatrix[mappedShape[i].row+0][mappedShape[i].col+shapeMatrix.length] != 0) isGameOver = true;
+    }
+
+    if(!isGameOver){
+        for(let i =0;i<mappedShape.length;i++){
+            colorMatrix[mappedShape[i].row+0][mappedShape[i].col+shapeMatrix.length] = colorID;
+        }
+    }
+
     return {
         shapeMatrix,
         currentPositionX:0,
@@ -65,7 +80,8 @@ function makeShape(){
         id: colorID,
         maxRow,
         maxCol,
-        mappedShape
+        mappedShape,
+        isGameOver
     }
 }
 /* 

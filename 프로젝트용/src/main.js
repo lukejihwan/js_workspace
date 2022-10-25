@@ -1,6 +1,6 @@
 import { cellMatrix, colorMatrix, makeBoard } from "./board.js";
 // import { makeShape } from "./shapes.js";
-import {processing, downShape, detectingBottom, getLowestCell} from "./process.js";
+import {processing, downShape, detectingBottom, getLowestCell, shapeData} from "./process.js";
 
 // import "./board.js";
 
@@ -8,14 +8,19 @@ addEventListener("load", function(){
     init();
 })
 
+let id;
 function init(){
     let start = document.querySelector("#start")
     start.addEventListener("click", function(){
-        detectingBottom()
+        // detectingBottom()
         // downShape()
+        processing(id);
+        id = setInterval(function(){
+            processing(id);
+        }, 100);
     })
     makeBoard();
-    processing();
+    // processing();
     // colorMatrix[10][4] = 4;
     document.querySelector("#test-btn").addEventListener("click", processing)
 }

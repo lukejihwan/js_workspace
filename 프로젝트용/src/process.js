@@ -4,13 +4,17 @@ import {makeShape, colors} from "./shapes.js";
 
 let isShapeOut = false; // 사용자가 조작할 도형이 존재 하는지
 let shapeData; //현재 사용자가 조작중인 도형
-function processing(){
+function processing(id){
     if(!isShapeOut){
         shapeData = makeShape()
+        if(shapeData.isGameOver){
+            alert("게임오버");
+            clearTimeout(id);
+        }else{
         draw()
         isShapeOut = true;
+        }
     }else{
-        isGameOVer()
         detectingBottom()
     }
     // console.log(shapeData)
@@ -26,16 +30,6 @@ function draw(){
             cellMatrix[i][j].style.backgroundColor = colors[colorMatrix[i][j]];
         }
     }   
-}
-function isGameOVer(){
-    let mappedShape = shapeData.mappedShape;
-    let currentPosX = shapeData.currentPositionX;
-    let currentPosY = shapeData.currentPositionY;
-    for(let i = 0;i<shapeData.mappedShape.leftBottomSpace;i++){
-        if(colorMatrix[mappedShape[i].row+currentPosX][mappedShape[i].col+currentPosY] !=0){
-            console.log("게임오버")
-        }
-    }
 }
 function getLowestCell(){
     // 아래쪽으로 도형을 내리기 위해 먼저 충돌 감지를 해야함
@@ -110,5 +104,9 @@ function downShape(){
     draw()
 }
 
+// function getLeftestCell(){
 
-export {processing, downShape, detectingBottom, getLowestCell};
+// }
+
+
+export {processing, downShape, detectingBottom, getLowestCell, shapeData};
