@@ -20,7 +20,13 @@ function init(){
         }, 100);
     })
     makeBoard();
-    // processing();
+    processing();
     // colorMatrix[10][4] = 4;
+    document.body.addEventListener("keydown", function(event){
+        // if(event.keyCode == )
+        switch(event.keyCode){
+            case 40: detectingBottom();break;
+        }
+    })
     document.querySelector("#test-btn").addEventListener("click", processing)
 }

@@ -130,12 +130,22 @@ function getLeftestCell(){
     //         j++
     //     }
     // }
-    for(let i =0;i<shapeData.mappedShape.length;i++){
-        if(cRow < shapeData.mappedShape[i].row) cRow = shapeData.mappedShape[i].row;
+    for(let i =0;i<shapeData.maxRow;i++){
         for(let j = 0;j<shapeData.mappedShape.length;j++){
-            
+            if(cRow == shapeData.mappedShape[j].row){
+                leftestMap.push(shapeData.mappedShape[j])
+                cRow++;
+                break;
+            }
         }
     }
+
+    console.log(leftestMap);
+    return leftestMap;
+}
+
+function leftShape(){
+
 }
 
 
