@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=l, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    // 배열을 반복문으로 지울 때 주의할 점
+    // 배열을 반복문으로 지울 때 첫번째 시도는 제대로 삭제되지만, 두번째 부터는 문제가 생긴다
+    // (반복문 조건에 length 사용할 경우)
+
+    let fruit = ["a", "b", "c"]
+
+    function test(){
+        for(let i =0;i<fruit.length;i++){
+            console.log(i+"번째 요소를 지움");
+            fruit.splice(i, 1)
+        }
+        console.log("결과", fruit);
+    }
+</script>
+<body>
+    
+</body>
+</html>

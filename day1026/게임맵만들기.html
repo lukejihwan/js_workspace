@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    let blockWidth = 50;
+    let blockHeight = 50;
+    let wrapper;
+    let map = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,1,0,0],
+        [0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,1,1,0,0,0],
+        [0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+        new Array(20).fill(1)
+    ]
+
+    addEventListener("load", init)
+    function init(){
+        wrapper = createWrapper();
+        createMap();
+    }
+
+    // 2차원 배열을 해석하여 배열 내의 데이터가 0일때는 일반 블럭, 
+    // 1일때는 버섯, 2일때는 기타 아이템...
+    function createWrapper(){
+        let div = document.createElement("div");
+        div.style.width = blockWidth * map[0].length + "px";
+        div.style.height = blockWidth * map.length + "px";
+        div.style.margin = "auto";
+        div.style.position = "relative"
+        div.style.background = "skyblue"
+
+        document.body.appendChild(div);
+        return div;
+        
+    }
+
+    function createMap(){
+        for(let i =0;i<map.length;i++){
+            for(let j = 0;j<map[i].length;j++){
+                let img = document.createElement("img");
+                img.style.position = "absolute";
+                img.style.left = j * blockWidth + "px";
+                img.style.top = i * blockHeight + "px";
+                img.style.width = blockWidth + "px"
+                img.style.height = blockHeight + "px"
+
+                if(map[i][j]!=0)
+                img.src = "../images/brick"+map[i][j]+".png"
+
+                wrapper.appendChild(img);
+            }
+        }
+    }
+</script>
+<body>
+</body>
+</html>

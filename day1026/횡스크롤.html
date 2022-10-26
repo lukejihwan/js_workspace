@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>횡스크롤</title>
+</head>
+<style>
+    body{
+        margin: 0px;
+    }
+    #stage{
+        width: 100%;
+        height: 640px;
+        background-image: url(../images/bg_game.png);
+        position: relative;
+        overflow: hidden;
+    }
+    #wrapper{
+        width: 100%;
+        height: 160px;
+        border: 2px solid blue;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+    #wrapper div{
+        float: left;
+        width: 33.333%;
+        height: 100%;
+    }
+    #info1{
+        background-color: indianred;
+    }
+    #info2{
+        background-color: #ff00cc;
+    }
+    #info3{
+        background-color: mediumseagreen;
+    }
+
+</style>
+<script src="./Plane.js"></script>
+<script src="./Bullet.js"></script>
+<script src="./Enemy.js"></script>
+<script src="../lib/util.js"></script>
+<script>
+    //#변수
+    let stage;
+    let bgX =0
+    let bgSpeed = 2;
+    let plane;
+    let planeSpeed = 5;
+    let info1;
+    let info2;
+    let info3;
+
+
+    
+    // #배열
+    let bulletArray = [];
+    let enemyArray = [];
+    let enemyNameArray = ["e1.png", "e2.png","e3.png","e4.png","e4.png","e5.png"];
+    addEventListener("load", function(){
+        init()
+    })
+
+    function init(){
+        stage = document.querySelector("#stage")
+        info1 = document.querySelector("#info1");
+        info2 = document.querySelector("#info2");
+        info3 = document.querySelector("#info3");
+        createHero()
+        createEnemy()
+
+
+        gameLoop()
+        // 키보드 이벤트 연결
+        document.body.addEventListener("keydown", function(event){
+            //37, 38, 39, 40, 32, 27
+            switch(event.keyCode){
+                case 37:
+                    moveX(-planeSpeed);break;
+                case 38:
+                    moveY(-planeSpeed);break;
+                case 39:
+                    moveX(planeSpeed);break;
+                case 40:
+                    moveY(planeSpeed);break;
+                case 32:
+                    fire();break;
+                case 27:
+            }
+                
+        })
+        document.body.addEventListener("keyup", function(event){
+            switch(event.keyCode){
+                case 37:
+                    moveX(0);break;
+                case 38:
+                    moveY(0);break;
+                case 39:
+                    moveX(0);break;
+                case 40:
+                    moveY(0);break;
+            }
+        })
+    }
+
+
+    // #배경, #루프 생성
+    function gameLoop(){
+        bgEffect(); //배경 무브
+        printLog(); //정보 출력
+
+        // 주인공 무브
+        plane.tick();
+        plane.render();
+
+        // 총알 무브
+        for(let i =0;i<bulletArray.length;i++){
+        bulletArray[i].tick();
+        bulletArray[i].render();
+        }        
+
+        // 적군 무브
+        for(let i = 0;i<enemyArray.length;i++){
+            enemyArray[i].tick();
+            enemyArray[i].render();
+        }
+        // 게임에 등장하는 총알들과, 적군들을 조사
+        setTimeout(gameLoop, 10);
+    }
+
+    // 배경효과처리
+    function bgEffect(){
+        bgX -= bgSpeed;
+        stage.style.backgroundPosition = bgX + "px 0px";
+    }
+
+    function printLog(){
+        let str = "";
+        //  info1 에 출력
+        str += 
+        `비행기 velX: ${plane.velX}
+        비행기 velY: ${plane.velY}
+        총알의 수: ${bulletArray.length}`;
+        info1.innerText = str;
+        str = "";
+        //  info2 에 출력
+        str += 
+        `적군 수: ${enemyArray.length}`;
+        info2.innerText = str;
+        str = ""
+        //  info3 에 출력
+        str += "배경위치: " + bgX + "\n"
+        str += "배경속도: " + bgSpeed + "\n"
+        info3.innerText = str;
+    }
+
+    // #인스턴스 생성
+    // 주인공 생성하기
+    function createHero(){
+        //container, src, x, y, width, height, velX, velY
+        plane = new Plane(stage, "../images/icon_spaceShip.png", 100, 100, 100, 140, 0, 0);
+    }
+    // 적군을 생성하기
+    function createEnemy(){
+        for(let i = 0;i<enemyNameArray.length;i++)
+        enemyArray.push(new Enemy(stage, "../images/game/" + enemyNameArray[i], screen.width - 100, 100 * i, 80, 85, i*0.1, 0))
+    }
+
+
+
+    // #인스턴스 제어
+    // 주인공 키보드 제어
+    function moveX(speed){
+        plane.velX = speed;
+    }
+    function moveY(speed){
+        plane.velY = speed;
+    }
+    function fire(){
+        bulletArray.push(new Bullet(stage, "../images/bullet.png", plane.x + plane.width + 20, plane.y + plane.height/2, 25, 25, 10, 0));
+    }
+</script>
+<body>
+    <div id="stage"></div>
+    <div id="wrapper">
+        <div id="info1"></div>
+        <div id="info2"></div>
+        <div id="info3"></div>
+    </div>
+</body>
+</html>
