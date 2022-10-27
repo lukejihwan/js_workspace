@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>갤러그</title>
+</head>
+<style>
+    body{
+        margin: 0px;
+    }
+    #wrapper{
+        width: 1000px;
+        height: 800px;
+        background-image: url(../images//gallerxy/bg.png);
+        margin: auto;
+    }
+    #stage{
+        width: 100%;
+        height: 700px;
+        position: relative;
+    }
+    #hp-area{
+        width: 100%;
+        height: 100px;
+    }
+</style>
+<script src="./classes/GameObject.js"></script>
+<script src="./classes/Hero.js"></script>
+<script src="./classes/Bullet.js"></script>
+<script src="./classes/Enemy.js"></script>
+<script>
+    const ENEMY_SIZE = 40;
+
+    // #변수
+    let stage;
+    let hpArea;
+    let wrapper
+    let bgY=0, bgSpeed = 2;
+    let hero
+    let gameFlag = true;
+
+    // #배열
+    let bulletArray = [];
+    let enemyArray = [];
+    let enemyNameArray = ["enemy1.png", "enemy2.png", "blue_king.png", "green_king.png"];
+    addEventListener("load", function(){
+        init()
+    })    
+
+    // #init
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        stage = document.querySelector("#stage");
+        hpArea = document.querySelector("#hp-area");
+        createHero();
+        createEnemy();
+        gameLoop();
+
+        document.body.addEventListener("keydown", function(e){
+            switch(e.keyCode){
+                case 32:fire();break;
+                case 37:moveX(-5);break;
+                case 39:moveX(5);break;
+                case 27:gameFlag = !gameFlag;break; //pause continue;
+            }
+        }) 
+        document.body.addEventListener("keyup", function(e){
+            switch(e.keyCode){
+                case 37:moveX(0);break;
+                case 39:moveX(0);break;
+            }
+        }) 
+    }
+
+    // #루프
+    function gameLoop(){
+        if(gameFlag){ // 일시정지를 위해
+            //배경무브
+            bgEffect()
+            hero.tick()
+            hero.render()
+
+            // 총알 무브
+            for(let i =0;i< bulletArray.length;i++){
+                bulletArray[i].tick();
+                bulletArray[i].render();
+            }
+
+            // 적군무브
+            for(let i =0;i<enemyArray.length;i++){
+                for(let j = 0;j<enemyArray[i].length;j++){
+                    enemyArray[i][j].tick()
+                    enemyArray[i][j].render()
+                }
+            }
+
+        }
+            setTimeout(gameLoop, 10)//fps
+    }
+
+    //#배경
+    function bgEffect(){
+        bgY += bgSpeed;
+        wrapper.style.backgroundPosition = "0px " + bgY + "px";
+    }
+
+
+    // #객체생성
+    // 주인공생성
+    function createHero(){
+        hero = new Hero(stage, "../images/gallerxy/ship.png", 450, 550, 70, 70, 0, 0);
+    }
+    // 총알 생성
+    function fire(){
+        bulletArray.push(new Bullet(stage, "../images/gallerxy/bullet.png", hero.x + hero.width/2-13, hero.y-(20), 25, 25, 0, -10))
+    }
+    function createEnemy(){
+        for(let i=0;i<4;i++){
+            let temp = [];
+            for(let j = 0;j<800/ENEMY_SIZE;j++){
+                temp.push(new Enemy(stage, "../images/gallerxy/" + enemyNameArray[i], 100 + j*ENEMY_SIZE, 100 + i*ENEMY_SIZE, ENEMY_SIZE, ENEMY_SIZE, 0, 0))
+            }
+            enemyArray.push(temp);
+        }
+    }
+
+
+    // #객체조작
+    function moveX(speed){
+        hero.velX=speed;
+    }
+</script>
+<body>
+    <div id="wrapper">
+        <div id="stage"></div>
+        <div id="hp-area"></div>
+    </div>
+</body>
+</html>
