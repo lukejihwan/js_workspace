@@ -1,7 +1,4 @@
 
-import {colorMatrix, cellMatrix} from "./board.js";
-import {makeShape, colors} from "./shapes.js";
-
 let isShapeOut = false; // 사용자가 조작할 도형이 존재 하는지
 let shapeData; //현재 사용자가 조작중인 도형
 function processing(id){
@@ -16,7 +13,8 @@ function processing(id){
         }
     }else{
         detectingBottom()
-        getLeftestCell()
+        // detectingLeft()
+        // detectingRight()
     }
     console.log(shapeData)
     // console.log(colorMatrix)
@@ -32,6 +30,39 @@ function draw(){
         }
     }   
 }
+
+// colorMatrix에 그려져있는 도형을 지우는 함수
+function clearShape(){
+    for(let i =0;i<shapeData.mappedShape.length;i++){
+        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = 0;
+    }
+}
+
+function putShape(){
+    for(let i = 0;i<shapeData.mappedShape.length;i++){
+        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = shapeData.id;
+    }
+}
+
+function moveShape(direction){
+    clearShape()
+    
+    switch(direction){
+        case "down":
+            shapeData.currentPositionX++;
+            putShape();
+            break;
+        case "left":
+            shapeData.currentPositionY--;
+            putShape()
+            break;
+        case "right":
+            shapeData.currentPositionY++
+            putShape()
+    }
+    draw()
+}
+
 function getLowestCell(){
     // 아래쪽으로 도형을 내리기 위해 먼저 충돌 감지를 해야함
         let lowestmap = []
@@ -55,7 +86,7 @@ function getLowestCell(){
                 
             }
             // console.log(lowestmap, "push")
-            lowestmap.push([currentMaxRow+1, currentMaxCol])
+            lowestmap.push([currentMaxRow, currentMaxCol])
         }
         return lowestmap;
     }
@@ -75,8 +106,9 @@ function detectingBottom(){
     if(leftBottomSpace>=1){
         for(let i =0;i<lowCell.length;i++){
             // console.log(lowCell[i][0] + shapeData.currentPositionX, lowCell[i][1] + shapeData.currentPositionY)
-            
-            if(colorMatrix[lowCell[i][0] + shapeData.currentPositionX][lowCell[i][1] + shapeData.currentPositionY]){
+            let absoluteRow = lowCell[i][0]+1 + shapeData.currentPositionX
+            let absoluteCol = lowCell[i][1] + shapeData.currentPositionY
+            if(colorMatrix[absoluteRow][absoluteCol]){
                 console.log("충돌");
                 isShapeOut = false;
                 return 0;
@@ -88,48 +120,28 @@ function detectingBottom(){
         isShapeOut = false;
         return 0;
     }
-    downShape();
+    // downShape();
+    moveShape("down");
 }
 
 
-function downShape(){
+// function downShape(){
 
-    for(let i =0;i<shapeData.mappedShape.length;i++){
-        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = 0;
-    }
-    shapeData.currentPositionX++;
-    for(let i = 0;i<shapeData.mappedShape.length;i++){
-        colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = shapeData.id;
-    }
+//     clearShape()
+//     shapeData.currentPositionX++;
+//     for(let i = 0;i<shapeData.mappedShape.length;i++){
+//         colorMatrix[shapeData.mappedShape[i].row + shapeData.currentPositionX][shapeData.mappedShape[i].col + shapeData.currentPositionY] = shapeData.id;
+//     }
 
-    draw()
-}
+//     draw()
+// }
+
 
 function getLeftestCell(){
     //현재 도형에서 가장 왼쪽에  있는 셀들의 배열을 구하자
-    let breakCheck = false
-    // for(let i =0;i<shapeData.maxRow;i++){
-    //     for(let j = 0; j<shapeData.maxCol;j++){
-    //         shapeData.mappedShape.forEach(item=>{
-    //             if(colorMatrix[])
-    //         })
-    //     }
-    //     if(breakCheck) break;
-    // }
-    let i =0;
     let leftestMap = [];
     let cRow = 0;
 
-    // while(true){
-    //     let j = 0;
-    //     while(true){
-    //         for(let k =0;k<shapeData.mappedShape.length;k++){
-    //             if()
-    //         }
-
-    //         j++
-    //     }
-    // }
     for(let i =0;i<shapeData.maxRow;i++){
         for(let j = 0;j<shapeData.mappedShape.length;j++){
             if(cRow == shapeData.mappedShape[j].row){
@@ -140,13 +152,75 @@ function getLeftestCell(){
         }
     }
 
-    console.log(leftestMap);
+    // console.log(leftestMap);
     return leftestMap;
 }
 
-function leftShape(){
+function detectingLeft(){
+    let leftCell = getLeftestCell()
+    console.log(leftCell)
 
+    let leftLeftSpace = shapeData.currentPositionY;
+    console.log(leftLeftSpace);
+
+    if(leftLeftSpace>=1){
+        for(let i = 0;i<leftCell.length;i++){
+            let absoluteRow = leftCell[i].row + shapeData.currentPositionX;
+            let absoluteCol = leftCell[i].col + shapeData.currentPositionY - 1;
+            if(colorMatrix[absoluteRow][absoluteCol] !=0){
+                console.log("왼쪽충돌");
+                return 0;
+            }
+            
+        }
+    }else{
+        console.log("왼쪽벽에 닿음");
+        return 0;
+    }
+    // leftShape();
+    moveShape("left");
 }
 
+function getRightlestCell(){
+    let rightestMap = [];
+    let mappedShape = shapeData.mappedShape;
+    let cCol = 0;
+    let cRow = 0;
 
-export {processing, downShape, detectingBottom, getLowestCell, shapeData};
+    for(let i = 0; i< shapeData.maxRow;i++){
+        for(let j = 0; j<mappedShape.length;j++){
+            console.log(`mappedShape[${j}].row: ${mappedShape[j].row}, cRow: ${cRow}`);
+            console.log(`mappedShape[${j}].col: ${mappedShape[j].col}, cCol = ${cCol}`);
+            if(mappedShape[j].row == cRow && mappedShape[j].col > cCol){
+                cCol = mappedShape[j].col;
+                console.log(cCol, "cCol")
+            }
+        }
+        rightestMap.push([cRow, cCol]);
+        cCol = 0;
+        cRow++;
+    }
+    return rightestMap;
+}
+
+function detectingRight(){
+    let rightCell = getRightlestCell();
+
+    console.log(rightCell)
+    let rightSpace = colorMatrix[0].length - shapeData.currentPositionY - shapeData.maxCol;
+    console.log(rightSpace);
+    if(rightSpace>=1){
+        for(let i =0;i<rightCell.length;i++){
+            let absoluteRow = rightCell[i][0] + shapeData.currentPositionX;
+            let absoluteCol = rightCell[i][1] + shapeData.currentPositionY +1;
+            if(colorMatrix[absoluteRow][absoluteCol] !=0){
+                console.log("오른쪽충돌");
+                return 0;
+            }
+        }
+    }else{
+        console.log("오른쪽 벽에 닿음");
+        return 0;
+    }
+    moveShape("right");
+}

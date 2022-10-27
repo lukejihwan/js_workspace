@@ -20,4 +20,4 @@ function getRandom(max){
 function getRandomWithRange(min, max){
     return parseInt(Math.random() * (max-min+1)) + min; //m~n 사이의 정수 출력
 }
-export {getRandom, getRandomWithRange};
+// export {getRandom, getRandomWithRange};

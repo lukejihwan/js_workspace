@@ -1,8 +1,4 @@
-import { cellMatrix, colorMatrix, makeBoard } from "./board.js";
-// import { makeShape } from "./shapes.js";
-import {processing, downShape, detectingBottom, getLowestCell, shapeData} from "./process.js";
 
-// import "./board.js";
 
 addEventListener("load", function(){
     init();
@@ -17,15 +13,17 @@ function init(){
         processing(id);
         id = setInterval(function(){
             processing(id);
-        }, 100);
+        }, 1000);
     })
     makeBoard();
-    processing();
-    // colorMatrix[10][4] = 4;
+    // processing();
+    // colorMatrix[1][1] = 4;
     document.body.addEventListener("keydown", function(event){
         // if(event.keyCode == )
         switch(event.keyCode){
             case 40: detectingBottom();break;
+            case 37: detectingLeft();break;
+            case 39: detectingRight();break;
         }
     })
     document.querySelector("#test-btn").addEventListener("click", processing)

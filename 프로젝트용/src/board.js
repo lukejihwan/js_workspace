@@ -34,5 +34,3 @@ function makeCells(){
     }
 }
 // makeBoard();
-
-export {cellMatrix,colorMatrix , makeBoard};

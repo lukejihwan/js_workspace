@@ -1,5 +1,3 @@
-import {cellMatrix, colorMatrix} from "./board.js";
-import {getRandom} from "./util.js";
 
 const SHAPE_TYPES = 7;
 
@@ -151,5 +149,4 @@ function selectShapes(n, mat){
         };break;
     }
 }
-export {makeShape, colors};
 
