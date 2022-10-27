@@ -15,10 +15,45 @@ function processing(id){
         detectingBottom()
         // detectingLeft()
         // detectingRight()
+        detectingLine();
     }
     console.log(shapeData)
-    // console.log(colorMatrix)
+    console.log(colorMatrix)
     // console.log(cellMatrix)
+
+}
+
+/**
+ * 한줄이 다 채워졌는지 검사하는 함수
+ */
+function detectingLine(){
+    // 테스트코드
+    for(let i = colorMatrix.length - 3; i< colorMatrix.length;i++){
+        for(let j = 0; j<colorMatrix[i].length;j++){
+            colorMatrix[i][j] = 2;
+        }
+    }
+    draw()
+
+
+
+    let linedIndex = 0;
+    for(let i =0;i<colorMatrix.length;i++){
+        console.log(i);
+        let line = colorMatrix[i];
+        let isLined = true
+        for(let j = 0;j<line.length;j++){
+            if(line[j]==0) isLined = false;
+        }
+
+        if(isLined) linedIndex++;
+    }
+
+    console.log(linedIndex, "만든 라인")
+    return linedIndex;
+}
+
+function clearLine(){
 
 }
 
