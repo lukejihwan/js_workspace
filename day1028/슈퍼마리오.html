@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슈퍼마리오</title>
+</head>
+<style>
+    #wrapper{
+        margin: auto;
+    }
+</style>
+<script src="classes/GameObject.js"></script>
+<script src="classes/Brick.js"></script>
+<script src="classes/Mario.js"></script>
+<script src="../lib/util.js"></script>
+<script>
+    // 상수
+    const BRICK_SIZE = 50;
+
+    //#변수
+    let brickArray = []
+    let wrapper;
+    let info; // 게임의 정보를 출력할 div 영역
+    let mario;
+    let gameFlag = true;
+    addEventListener("load", init)
+    function init(){
+        wrapper = document.querySelector("#wrapper");
+        wrapper.style.width = 20 * BRICK_SIZE + "px";
+        wrapper.style.height = 6 * BRICK_SIZE + "px";
+        wrapper.style.position = "relative";
+        info = document.querySelector("#info")
+        createBrick()
+        createMario()
+
+        document.body.addEventListener("keydown", function(){
+            switch(event.keyCode){
+                case 37: moveX(-5);break;
+                case 39: moveX(5);break;
+                case 32: 
+                if(mario.velY==0){
+                jump();
+                }break;
+                case 27: gameFlag = !gameFlag;
+            }
+        }) 
+        document.body.addEventListener("keyup", function(){
+            switch(event.keyCode){
+                case 37: moveX(0);break;
+                case 39: moveX(0);break;
+                case 27: gameFlag = !gameFlag;
+            }
+        }) 
+
+        gameLoop()
+    }
+
+    function printLog(){
+        let str = "";
+        str += 
+        `velY: ${mario.velY}
+        y: ${mario.y}
+        중력g: ${mario.g}
+        width: ${mario.width}
+        height: ${mario.height}
+        fall: ${mario.fall}
+        `
+        info.innerText = str;
+    }
+    // #루프
+    function gameLoop(){   
+        if(gameFlag){
+            // console.log(Mario)
+            mario.tick()
+            mario.render()
+
+            printLog()
+        }
+        // console.log(123);
+        requestAnimationFrame(gameLoop)
+        // setTimeout(gameLoop, 500)
+
+    }
+
+
+    // #객체생성
+    function createBrick(){
+        for(let i = 0;i<6;i++){
+            let temp = []
+            for(let j = 0;j< 20; j++){
+                if(i==5){
+                    temp.push(new Brick(wrapper, "yellow", j * BRICK_SIZE, i * BRICK_SIZE, BRICK_SIZE, BRICK_SIZE, 0, 0))
+                }else{
+                    temp.push(new Brick(wrapper, "cornflowerblue", j * BRICK_SIZE, i * BRICK_SIZE, BRICK_SIZE, BRICK_SIZE, 0, 0))
+                }
+            }
+            brickArray.push(temp)
+        }
+    }
+    function createMario(){
+        mario = new Mario(wrapper, "red", 100, 50, 50, 75, 0, 1);
+    }
+
+    // #객체조작
+    // 마리오 움직이기
+    function moveX(n){
+        mario.velX = n;
+    }
+    // 마리오 점프시키기
+    function jump(){
+        mario.fall = false;
+        mario.velY = -10
+    }
+</script>
+<body>
+    <div id="wrapper"></div>
+    <div id="info">asd</div>
+</body>
+</html>
